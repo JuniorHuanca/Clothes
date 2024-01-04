@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import Provider from "./context/client-provider";
+import Provider from "../context/client-provider";
 import { getServerSession } from "next-auth";
-
+import { Toaster } from "sonner";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -22,6 +22,7 @@ export default async function RootLayout({
     <html lang="en">
       <Provider session={session}>
         <body className={inter.className}>{children}</body>
+        <Toaster />
       </Provider>
     </html>
   );

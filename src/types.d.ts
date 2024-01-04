@@ -16,5 +16,6 @@ declare namespace NodeJS {
     SPOTIFY_CLIENT_SECRET: string;
     NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: string;
     STRIPE_SECRET_KEY: string;
+    BASE_URL: string;
   }
 }
