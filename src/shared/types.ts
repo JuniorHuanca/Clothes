@@ -14,3 +14,10 @@ export interface IRole {
   name: string;
   routes: string[];
 }
+
+export interface IOrder {
+  id: number;
+  description: string;
+  deliveryUserId: string;
+  deliveryUser: IUser;
+}

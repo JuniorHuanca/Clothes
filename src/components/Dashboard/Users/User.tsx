@@ -1,20 +1,45 @@
 "use client";
-
+import useRolesData from "@/hooks/useRolesData";
 import { IUser } from "@/shared/types";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { toast } from "sonner";
 const User = (props: IUser) => {
+  const router = useRouter();
+  const data = useRolesData();
   const [showRolesList, setShowRolesList] = useState(false);
-  const [selectedRole, setSelectedRole] = useState(props.role.name);
+  const [selectedRole, setSelectedRole] = useState(props.role.id);
+  const [loading, setLoading] = useState(false);
+  const handleSave = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(`/api/v1/dashboard/users/role`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: props.email, roleId: selectedRole }),
+      });
 
-  const handleSave = () => {
-    console.log("Rol seleccionado:", selectedRole);
-    setShowRolesList(false);
+      if (response.ok) {
+        router.refresh();
+        toast.success("El rol del usuario se ha cambiado con éxito");
+      } else {
+        toast.error(response.statusText);
+      }
+    } catch (error) {
+      console.error("Error en la solicitud:", error);
+    } finally {
+      setLoading(false);
+      setShowRolesList(false);
+    }
   };
   const styleByRole: { [key: string]: string } = {
-    Administrador: "bg-blue-500",
-    Usuario: "bg-red-500",
-    Delivery: "bg-green-500",
+    Administrador:
+      "bg-indigo-500 ring-offset-2 ring-offset-white ring-indigo-500",
+    Usuario: "bg-emerald-500 ring-offset-2 ring-offset-white ring-emerald-500",
+    Delivery: "bg-purple-500 ring-offset-2 ring-offset-white ring-purple-500",
   };
   return (
     <div className="flex flex-col justify-between gap-2 bg-white shadow-lg rounded-lg p-2 w-72 overflow-hidden">
@@ -38,33 +63,36 @@ const User = (props: IUser) => {
       </div>
       {showRolesList ? (
         <div>
-          <ul className="flex flex-col gap-1">
-            {Object.keys(styleByRole).map((roleName) => (
-              <li
-                key={roleName}
-                className={`${styleByRole[roleName]} ${
-                  roleName === selectedRole ? "font-bold text-white" : ""
-                } p-2 rounded-lg text-center hover:cursor-pointer`}
-                onClick={() => setSelectedRole(roleName)}
+          <div className="flex flex-col gap-2">
+            {data.map((role) => (
+              <button
+                type="button"
+                key={role.name}
+                className={`${styleByRole[role.name]} ${
+                  role.id === selectedRole ? "font-bold text-white ring-2" : ""
+                } p-1 rounded-lg text-center`}
+                onClick={() => setSelectedRole(role.id)}
               >
-                {roleName}
-              </li>
+                {role.name}
+              </button>
             ))}
-          </ul>
-          <div className="flex mt-2">
-            <button
-              type="button"
-              className="bg-gray-300 text-gray-700 px-2 py-1 rounded mr-2"
-              onClick={() => setShowRolesList(false)}
-            >
-              Cancelar
-            </button>
+          </div>
+          <div className="flex justify-evenly mt-2">
             <button
               type="button"
               className="bg-blue-500 text-white px-2 py-1 rounded"
               onClick={handleSave}
+              disabled={loading}
             >
               Guardar
+            </button>
+            <button
+              type="button"
+              className="bg-red-500 text-white px-2 py-1 rounded mr-2"
+              onClick={() => setShowRolesList(false)}
+              disabled={loading}
+            >
+              Cancelar
             </button>
           </div>
         </div>

@@ -15,7 +15,7 @@ const DashboardUsers = (props: Props) => {
           </p>
         </div>
       </nav>
-      <Suspense fallback={<div>squeleton here loading...</div>}>
+      <Suspense fallback={<div><span>squeleton here loading...</span></div>}>
         <Users />
       </Suspense>
     </DashboardLayout>

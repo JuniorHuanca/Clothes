@@ -25,6 +25,9 @@ export async function PATCH(request: Request) {
       { status: 200 }
     );
   } catch (error) {
-    return Response.json({ message: "fail" });
+    return Response.json(
+      { error: "There was an internal server error. Please try again later." },
+      { status: 500 }
+    );
   }
 }

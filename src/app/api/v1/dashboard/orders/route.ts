@@ -2,20 +2,22 @@ import prisma from "@/lib/prismadb";
 
 export async function GET() {
   try {
-    const users = await prisma.user.findMany({
+    const orders = await prisma.order.findMany({
       include: {
-        role: true,
+        deliveryUser: true,
       },
-      orderBy: { name: "asc" },
+      orderBy: {
+        id: "asc",
+      },
     });
-    if (!users.length)
+    if (!orders.length)
       return Response.json(
         {
-          message: "Users not found",
+          message: "Orders not found",
         },
         { status: 404 }
       );
-    return Response.json(users, { status: 200 });
+    return Response.json(orders, { status: 200 });
   } catch (error) {
     if (error instanceof Error) {
       return Response.json(

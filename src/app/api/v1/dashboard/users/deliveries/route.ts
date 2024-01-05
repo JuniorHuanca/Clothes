@@ -3,6 +3,9 @@ import prisma from "@/lib/prismadb";
 export async function GET() {
   try {
     const users = await prisma.user.findMany({
+      where: {
+        role: { name: "Delivery" },
+      },
       include: {
         role: true,
       },
@@ -11,7 +14,7 @@ export async function GET() {
     if (!users.length)
       return Response.json(
         {
-          message: "Users not found",
+          message: "Deliveries not found",
         },
         { status: 404 }
       );
