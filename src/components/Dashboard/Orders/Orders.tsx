@@ -2,7 +2,6 @@
 import { IOrder, IUser } from "@/shared/types";
 import Order from "./Order";
 import { useState } from "react";
-import useDeliveries from "@/hooks/useDeliveries";
 import Deliveries from "@/components/Modals/Deliveries";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -11,10 +10,26 @@ type Props = { data: IOrder[] };
 const Orders = ({ data }: Props) => {
   const router = useRouter();
   const [showModalDeliveries, setShowModalDeliveries] = useState(false);
-  const [ordersIds, setOrdersIds] = useState<number[]>([]);
+  const [ordersSelecteds, setOrdersSelecteds] = useState<IOrder[]>([]);
   const [selectedDelivery, setSelectedDelivery] = useState<IUser | null>(null);
   const [loading, setLoading] = useState(false);
+  const hasDeliveryAssigned = () => {
+    return ordersSelecteds.some(
+      (e) =>
+        e.deliveryUser !== null && e.deliveryUser.id !== selectedDelivery?.id
+    );
+  };
   const handleAssign = async () => {
+    if (!selectedDelivery) {
+      return toast.success(
+        "Por favor, selecciona un repartidor antes de continuar."
+      );
+    }
+    if (hasDeliveryAssigned()) {
+      return toast.error(
+        "Hay una incoherencia. Ya existe una orden con un repartidor asignado. ¿Desea continuar? Se asignará el repartidor seleccionado a las órdenes seleccionadas."
+      );
+    }
     try {
       setLoading(true);
       const response = await fetch(`/api/v1/dashboard/orders/assign`, {
@@ -22,7 +37,10 @@ const Orders = ({ data }: Props) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ ordersIds, userId: selectedDelivery?.id }),
+        body: JSON.stringify({
+          ordersIds: ordersSelecteds.map((e) => e.id),
+          userId: selectedDelivery.id,
+        }),
       });
 
       if (response.ok) {
@@ -36,7 +54,8 @@ const Orders = ({ data }: Props) => {
     } finally {
       setLoading(false);
       setShowModalDeliveries(false);
-      setOrdersIds([]);
+      setOrdersSelecteds([]);
+      setSelectedDelivery(null);
     }
   };
   const handleRemoveAssign = async () => {
@@ -47,7 +66,7 @@ const Orders = ({ data }: Props) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ ordersIds }),
+        body: JSON.stringify({ ordersIds: ordersSelecteds.map((e) => e.id) }),
       });
 
       if (response.ok) {
@@ -61,22 +80,25 @@ const Orders = ({ data }: Props) => {
     } finally {
       setLoading(false);
       setShowModalDeliveries(false);
-      setOrdersIds([]);
+      setOrdersSelecteds([]);
+      setSelectedDelivery(null);
     }
   };
-  const toggleSelect = (orderId: number) => {
-    setOrdersIds((prevSelected) => {
-      if (prevSelected.includes(orderId)) {
-        return prevSelected.filter((id) => id !== orderId);
+  const isIncluding = (order: IOrder) => {
+    return ordersSelecteds.find((e) => e.id === order.id) !== undefined;
+  };
+  const toggleSelect = (order: IOrder) => {
+    setOrdersSelecteds((prevSelected) => {
+      if (isIncluding(order)) {
+        return prevSelected.filter((id) => id !== order);
       } else {
-        return [...prevSelected, orderId];
+        return [...prevSelected, order];
       }
     });
   };
-
   const selectAll = () => {
-    const allIds = data.map((e) => e.id);
-    setOrdersIds((prevSelected) => {
+    const allIds = data.map((e) => e);
+    setOrdersSelecteds((prevSelected) => {
       if (prevSelected.length === allIds.length) {
         // Desmarcar todos si todos están seleccionados
         return [];
@@ -87,13 +109,13 @@ const Orders = ({ data }: Props) => {
     });
   };
 
-  const isAllSelected = ordersIds.length === data.length;
+  const isAllSelected = ordersSelecteds.length === data.length;
   return (
     <>
-      {ordersIds.length > 0 && (
+      {ordersSelecteds.length > 0 && (
         <div className="flex items-center justify-between p-4 bg-blue-500 w-full">
           <span>
-            Seleccionados: {ordersIds.length} / {data.length}
+            Seleccionados: {ordersSelecteds.length} / {data.length}
           </span>
           <details className="relative group">
             <summary className="flex cursor-pointer items-center justify-between bg-white p-2 text-gray-900 transition">
@@ -105,6 +127,7 @@ const Orders = ({ data }: Props) => {
                 type="button"
                 className=""
                 onClick={() => setShowModalDeliveries(true)}
+                disabled={loading}
               >
                 Asignar Repartidor
               </button>
@@ -112,6 +135,7 @@ const Orders = ({ data }: Props) => {
                 type="button"
                 className=""
                 onClick={handleRemoveAssign}
+                disabled={loading}
               >
                 Quitar Repartidor
               </button>
@@ -137,9 +161,9 @@ const Orders = ({ data }: Props) => {
         {data.map((e) => (
           <Order
             key={e.id}
-            onSelect={() => toggleSelect(e.id)}
-            selected={ordersIds.includes(e.id)}
-            isOneSelected={ordersIds.length}
+            onSelect={() => toggleSelect(e)}
+            selected={isIncluding(e)}
+            isOneSelected={ordersSelecteds.length}
             {...e}
           />
         ))}
