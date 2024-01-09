@@ -17,7 +17,9 @@ const Home = (props: Props) => {
   return (
     <>
       Not signed in <br />
-      <button onClick={() => signIn()}>Sign in</button>
+      <button onClick={() => signIn()} type="button">
+        Sign in
+      </button>
     </>
   );
 };
