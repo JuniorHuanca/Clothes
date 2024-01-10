@@ -54,10 +54,10 @@ const User = (props: IUser) => {
             className="rounded-md"
           />
         )}
-        <span className="text-gray-600 line-clamp-1 hover:line-clamp-none">
+        <span className="text-gray-600 line-clamp-1">
           {props.email}
         </span>
-        <h2 className="text-xl line-clamp-1 hover:line-clamp-none font-semibold text-gray-800">
+        <h2 className="text-lg line-clamp-1 font-semibold text-gray-800">
           {props.name}
         </h2>
       </div>
