@@ -13,10 +13,10 @@ const DashboardLayout = ({ children }: Props) => {
   const [open, setOpen] = useState(true);
   if (status === "unauthenticated" || !session) return;
   return (
-    <main className="flex h-screen w-full bg-white">
+    <main className="flex h-screen w-full bg-slate-100">
       {open && <Sidebar session={session} setOpen={setOpen} />}
-      <div className="w-full bg-red-500">
-        <Navbar setOpen={setOpen} isOpen={open} />
+      <div className="w-full">
+        <Navbar setOpen={setOpen} isOpen={open} session={session} />
         {children}
       </div>
     </main>

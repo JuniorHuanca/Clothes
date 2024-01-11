@@ -8,6 +8,9 @@ const Breadcrumb = (props: Props) => {
   const pathname = usePathname();
   const translations: { [key: string]: string } = {
     products: "productos",
+    dashboard: "Panel de control",
+    orders: "Pedidos",
+    users: "Usuarios",
   };
   // Divide la ruta en segmentos
   const segments = pathname.split("/").filter((segment) => segment !== "");
@@ -20,13 +23,13 @@ const Breadcrumb = (props: Props) => {
 
   return (
     <nav aria-label="Breadcrumb">
-      <ol className="flex items-center gap-1 text-sm text-gray-600">
+      <ol className="flex items-center gap-1 text-sm">
         <li>
-          <Link href="/" className="block transition hover:text-gray-700">
+          <Link href="/" className="block">
             <span className="sr-only"> Home </span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4"
+              className="h-5 w-5"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -44,7 +47,7 @@ const Breadcrumb = (props: Props) => {
           <li key={crumb.title} className="flex items-center gap-1">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4 transform rotate-180"
+              className="h-5 w-5 transform rotate-180"
               viewBox="0 0 20 20"
               fill="currentColor"
             >
@@ -56,7 +59,7 @@ const Breadcrumb = (props: Props) => {
             </svg>
             <Link
               href={crumb.url}
-              className="block transition hover:text-gray-700"
+              className="relative w-fit block after:block after:content-[''] after:absolute after:h-[2px] after:bg-black after:w-full after:scale-x-0 after:hover:scale-x-100 after:transition after:duration-300 after:origin-left"
             >
               {crumb.title}
             </Link>

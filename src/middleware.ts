@@ -9,17 +9,17 @@ export default withAuth(
       return NextResponse.redirect(new URL("/auth/login", request.url));
     }
     if (
+      pathname.startsWith("/dashboard") &&
+      request.nextauth.token.role.name === "Usuario"
+    ) {
+      return NextResponse.redirect(new URL("/", request.url));
+    }
+    if (
       !request.nextauth.token.role.routes.includes(request.nextUrl.pathname)
     ) {
       return NextResponse.redirect(
         new URL(request.nextauth.token.role.routes[0], request.url)
       );
-    }
-    if (
-      pathname.startsWith("/dashboard") &&
-      request.nextauth.token.role.name === "Usuario"
-    ) {
-      return NextResponse.redirect(new URL("/", request.url));
     }
   },
   {

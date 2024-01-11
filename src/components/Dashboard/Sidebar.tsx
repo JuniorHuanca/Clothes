@@ -16,7 +16,7 @@ const Sidebar = ({ session, setOpen }: Props) => {
     { name: "Pedidos", route: "/dashboard/orders" },
   ];
   return (
-    <div className={`flex flex-col gap-3 p-2 min-w-72`}>
+    <div className={`flex flex-col gap-3 p-2 min-w-72 bg-white`}>
       <div className="flex justify-between">
         Clothes E-commerce
         <button type="button" onClick={() => setOpen(false)}>
