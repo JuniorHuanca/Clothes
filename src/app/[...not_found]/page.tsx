@@ -1,4 +1,3 @@
-import Layout from "@/components/Layouts/Layout";
 import { Metadata } from "next";
 import Link from "next/link";
 
@@ -8,7 +7,6 @@ export const metadata: Metadata = {
 };
 const PageNotFound = (props: Props) => {
   return (
-    //<Layout>
     <div className="flex h-screen flex-col bg-white">
       <img
         src="https://images.unsplash.com/photo-1558769132-cb1aea458c5e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1548&q=80"
@@ -35,7 +33,6 @@ const PageNotFound = (props: Props) => {
         </div>
       </div>
     </div>
-    //</Layout>
   );
 };
 

@@ -1,9 +1,8 @@
-import Layout from "@/components/Layouts/Layout";
 import Image from "next/image";
 
 export default function Home() {
   return (
-    <Layout>
+    <>
       <section className="relative bg-[url(https://images.unsplash.com/photo-1558769132-cb1aea458c5e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1548&q=80)] bg-cover bg-center bg-no-repeat">
         <div className="absolute inset-0 bg-white/50 sm:bg-transparent sm:from-white/50 sm:to-white/25 ltr:sm:bg-gradient-to-r sm:bg-gradient-to-l"></div>
 
@@ -441,6 +440,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-    </Layout>
+    </>
   );
 }

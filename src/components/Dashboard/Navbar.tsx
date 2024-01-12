@@ -1,5 +1,13 @@
 import { Session } from "next-auth";
 import Breadcrumb from "../Breadcrumb";
+import {
+  Bell,
+  CircleUser,
+  Menu,
+  MessageSquareMore,
+  Settings,
+} from "lucide-react";
+import Image from "next/image";
 
 type Props = {
   session: Session;
@@ -13,19 +21,26 @@ const Navbar = ({ setOpen, isOpen, session: { user } }: Props) => {
       <div className="flex justify-between">
         {!isOpen && (
           <button type="button" onClick={() => setOpen(true)}>
-            Abrir
+            <Menu />
           </button>
         )}
-        <div className="w-full flex justify-between">
+        <div className="w-full flex justify-end">
           <ul className="flex gap-4 items-center px-2">
-            <li>icon 1</li>
-            <li>icon 2</li>
-            <li>icon 3</li>
-            <li>icon 4</li>
-            <li>icon 5</li>
+            <li>
+              <Bell />
+            </li>
+            <li>
+              <Settings />
+            </li>
+            <li>
+              <MessageSquareMore />
+            </li>
           </ul>
           <div className="flex items-center">
-            <div className="h-10 w-10 bg-red-500 rounded-full"></div>
+            {!user.image && <CircleUser size={48} />}
+            {user.image && (
+              <Image src={user.image} height={48} width={48} alt={user.name} />
+            )}
             <div>
               <p>{user.name}</p>
               <p>{user.role.name}</p>

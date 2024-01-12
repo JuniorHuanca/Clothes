@@ -1,7 +1,7 @@
 "use client";
+import Navbar from "@/components/Dashboard/Navbar";
+import Sidebar from "@/components/Dashboard/Sidebar";
 import { useSession } from "next-auth/react";
-import Navbar from "../Dashboard/Navbar";
-import Sidebar from "../Dashboard/Sidebar";
 import { useState } from "react";
 
 type Props = {

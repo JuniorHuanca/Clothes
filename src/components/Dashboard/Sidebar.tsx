@@ -1,3 +1,4 @@
+import { Menu } from "lucide-react";
 import { Session } from "next-auth";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -20,7 +21,7 @@ const Sidebar = ({ session, setOpen }: Props) => {
       <div className="flex justify-between">
         Clothes E-commerce
         <button type="button" onClick={() => setOpen(false)}>
-          Cerrar
+          <Menu />
         </button>
       </div>
       {routes.map(
