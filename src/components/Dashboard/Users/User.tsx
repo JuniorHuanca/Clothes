@@ -42,7 +42,7 @@ const User = (props: IUser) => {
     Delivery: "bg-purple-500 ring-offset-2 ring-offset-white ring-purple-500",
   };
   return (
-    <div className="flex flex-col justify-between gap-2 bg-white shadow-lg rounded-lg p-2 w-72 overflow-hidden">
+    <div className="flex flex-col justify-between gap-2 bg-white shadow-lg rounded-lg p-2 w-72">
       <div>
         {props.image && (
           <Image
@@ -54,9 +54,7 @@ const User = (props: IUser) => {
             className="rounded-md"
           />
         )}
-        <span className="text-gray-600 line-clamp-1">
-          {props.email}
-        </span>
+        <span className="text-gray-600 line-clamp-1">{props.email}</span>
         <h2 className="text-lg line-clamp-1 font-semibold text-gray-800">
           {props.name}
         </h2>

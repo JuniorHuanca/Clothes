@@ -10,7 +10,7 @@ const Users = async (props: Props) => {
   );
 
   return (
-    <div className="flex flex-wrap justify-center gap-2">
+    <div className="flex flex-wrap justify-center gap-2 p-2">
       {data.map((e) => (
         <User key={e.id} {...e} />
       ))}

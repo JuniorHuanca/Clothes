@@ -8,6 +8,7 @@ import {
   Settings,
 } from "lucide-react";
 import Image from "next/image";
+import Tooltip from "../Tooltip";
 
 type Props = {
   session: Session;
@@ -21,29 +22,42 @@ const Navbar = ({ setOpen, isOpen, session: { user } }: Props) => {
       <div className="flex justify-between">
         {!isOpen && (
           <button type="button" onClick={() => setOpen(true)}>
-            <Menu />
+            <Tooltip text="Abrir menú" icon={<Menu />} alignment="left"/>
           </button>
         )}
         <div className="w-full flex justify-end">
-          <ul className="flex gap-4 items-center px-2">
-            <li>
-              <Bell />
-            </li>
-            <li>
-              <Settings />
-            </li>
-            <li>
-              <MessageSquareMore />
-            </li>
-          </ul>
-          <div className="flex items-center">
-            {!user.image && <CircleUser size={48} />}
-            {user.image && (
-              <Image src={user.image} height={48} width={48} alt={user.name} />
-            )}
+          <div className="flex gap-4 items-center px-2">
+            <button type="button">
+              <Tooltip text="Notificaciones" icon={<Bell />} />
+            </button>
+            <button type="button">
+              <Tooltip text="Configuración" icon={<Settings />} />
+            </button>
+            <button type="button">
+              <Tooltip
+                text="Mensajes"
+                icon={<MessageSquareMore />}
+                alignment="right"
+              />
+            </button>
+          </div>
+          <div className="flex gap-1 items-center bg-gray-200 px-1 rounded-md shadow-md max-w-48">
+            <div className="min-w-10">
+              {!user.image && <CircleUser size={40} />}
+              {user.image && (
+                <Image
+                  src={user.image}
+                  height={40}
+                  width={40}
+                  alt={user.name}
+                />
+              )}
+            </div>
             <div>
-              <p>{user.name}</p>
-              <p>{user.role.name}</p>
+              <p className="text-lg font-bold line-clamp-1">{user.name}</p>
+              <p className="text-sm text-gray-600 line-clamp-1">
+                {user.role.name}
+              </p>
             </div>
           </div>
         </div>
