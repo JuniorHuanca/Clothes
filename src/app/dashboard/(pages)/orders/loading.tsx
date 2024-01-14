@@ -1,11 +1,9 @@
-import React from 'react'
+import OrdersSkeleton from "@/components/Dashboard/Orders/OrdersSkeleton";
 
-type Props = {}
+type Props = {};
 
 const Loading = (props: Props) => {
-  return (
-    <div>Loading</div>
-  )
-}
+  return <OrdersSkeleton />;
+};
 
-export default Loading
+export default Loading;

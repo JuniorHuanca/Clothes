@@ -9,7 +9,7 @@ type Props = {};
 const Breadcrumb = (props: Props) => {
   const pathname = usePathname();
   const translations: { [key: string]: string } = {
-    products: "productos",
+    products: "Productos",
     dashboard: "Panel de control",
     orders: "Pedidos",
     users: "Usuarios",

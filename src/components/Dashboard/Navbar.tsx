@@ -18,11 +18,11 @@ type Props = {
 
 const Navbar = ({ setOpen, isOpen, session: { user } }: Props) => {
   return (
-    <div className="flex flex-col bg-white p-2">
+    <div className="flex flex-col p-2 sm:px-6">
       <div className="flex justify-between">
         {!isOpen && (
           <button type="button" onClick={() => setOpen(true)}>
-            <Tooltip text="Abrir menú" icon={<Menu />} alignment="left"/>
+            <Tooltip text="Abrir menú" icon={<Menu />} alignment="left" />
           </button>
         )}
         <div className="w-full flex justify-end">

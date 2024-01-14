@@ -1,7 +1,6 @@
 "use client";
 import useRolesData from "@/hooks/useRolesData";
 import { IUser } from "@/shared/types";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -42,18 +41,8 @@ const User = (props: IUser) => {
     Delivery: "bg-purple-500 ring-offset-2 ring-offset-white ring-purple-500",
   };
   return (
-    <div className="flex flex-col justify-between gap-2 bg-white shadow-lg rounded-lg p-2 w-72">
+    <div className="flex flex-col justify-between gap-2 bg-white shadow-lg rounded-lg p-2 w-64 max-[400px]:w-full">
       <div>
-        {props.image && (
-          <Image
-            unoptimized
-            src={props.image}
-            width={500}
-            height={500}
-            alt={props.name}
-            className="rounded-md"
-          />
-        )}
         <span className="text-gray-600 line-clamp-1">{props.email}</span>
         <h2 className="text-lg line-clamp-1 font-semibold text-gray-800">
           {props.name}
