@@ -1,39 +1,3 @@
-// type Props = {
-//   text: string;
-//   icon: React.ReactNode;
-//   alignment?: "left" | "center" | "right";
-// };
-
-// const alignmentClasses = {
-//   left: "left-1",
-//   right: "right-1",
-//   center: "left-1/2 transform -translate-x-1/2",
-// };
-
-// const Tooltip = ({ icon, text, alignment = "center" }: Props) => {
-//   const tooltipClasses = `absolute hidden peer-hover:block bg-teal-600 p-2 rounded-md shadow-md text-white text-center z-10 ${
-//     alignment === "center"
-//       ? alignmentClasses[alignment]
-//       : alignment === "right"
-//       ? "right-0"
-//       : "left-0"
-//   } mt-2`;
-
-//   return (
-//     <div className="relative inline-block">
-//       <div className="peer relative">{icon}</div>
-//       <div className={tooltipClasses}>
-//         <span
-//           className={`-z-10 w-4 h-4 bg-teal-600 absolute top-0 ${alignmentClasses[alignment]} -mt-1 rotate-45`}
-//         />
-//         {text}
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Tooltip;
-
 type Props = {
   text: string;
   icon: React.ReactNode;
@@ -41,17 +5,17 @@ type Props = {
 };
 
 const alignmentBox = {
-  left: "top-1/2 transform -translate-y-1/2 left-8",
-  right: "top-1/2 transform -translate-y-1/2 right-8",
-  top: "left-1/2 transform -translate-x-1/2 mt-2",
-  button: "left-1/2 transform -translate-x-1/2 mt-2",
+  left: "top-1/2 transform -translate-y-1/2 right-[120%]",
+  right: "top-1/2 transform -translate-y-1/2 left-[120%]",
+  top: "left-1/2 transform -translate-x-1/2 bottom-[130%]",
+  button: "left-1/2 transform -translate-x-1/2 top-[130%]",
 };
 
 const alignmentArrow = {
-  left: "top-1/2 transform -translate-y-1/2 -left-1",
-  right: "top-1/2 transform -translate-y-1/2 -right-1",
-  top: "left-1/2 transform -translate-x-1/2 mt-2",
-  button: "left-1/2 transform -translate-x-1/2 -top-1",
+  left: "top-1/2 transform -translate-y-1/2 -right-[2%]",
+  right: "top-1/2 transform -translate-y-1/2 -left-[2%]",
+  top: "left-1/2 transform -translate-x-1/2 -bottom-[10%]",
+  button: "left-1/2 transform -translate-x-1/2 -top-[10%]",
 };
 
 const Tooltip = ({ icon, text, alignment = "button" }: Props) => {
@@ -59,12 +23,12 @@ const Tooltip = ({ icon, text, alignment = "button" }: Props) => {
     <div className="relative inline-block">
       <div className="peer relative">{icon}</div>
       <div
-        className={`absolute hidden peer-hover:block bg-teal-600 p-2 rounded-md shadow-md text-white text-center z-10 ${alignmentBox[alignment]}`}
+        className={`w-max absolute hidden peer-hover:block bg-black p-2 rounded-md shadow-md text-white text-center z-10 ${alignmentBox[alignment]}`}
       >
         <span
-          className={`-z-10 w-4 h-4 bg-teal-600 absolute top-0 ${alignmentArrow[alignment]} rotate-45`}
+          className={`-z-10 w-3 h-3 bg-black absolute ${alignmentArrow[alignment]} rotate-45`}
         />
-        {text}
+        <p>{text}</p>
       </div>
     </div>
   );

@@ -29,7 +29,7 @@ const Breadcrumb = (props: Props) => {
         <li>
           <Link href="/" className="block">
             <span className="sr-only"> Home </span>
-            <Tooltip text="Inicio" icon={<Home size={20} />} alignment="left" />
+            <Tooltip text="Inicio" icon={<Home size={20} />} />
           </Link>
         </li>
         {crumbs.map((crumb) => (

@@ -22,7 +22,7 @@ const Navbar = ({ setOpen, isOpen, session: { user } }: Props) => {
       <div className="flex justify-between">
         {!isOpen && (
           <button type="button" onClick={() => setOpen(true)}>
-            <Tooltip text="Abrir menú" icon={<Menu />} alignment="left" />
+            <Tooltip text="Abrir menú" icon={<Menu />} alignment="right" />
           </button>
         )}
         <div className="w-full flex justify-end">
@@ -34,11 +34,7 @@ const Navbar = ({ setOpen, isOpen, session: { user } }: Props) => {
               <Tooltip text="Configuración" icon={<Settings />} />
             </button>
             <button type="button">
-              <Tooltip
-                text="Mensajes"
-                icon={<MessageSquareMore />}
-                alignment="right"
-              />
+              <Tooltip text="Mensajes" icon={<MessageSquareMore />} />
             </button>
           </div>
           <div className="flex gap-1 items-center bg-gray-200 px-1 rounded-md shadow-md max-w-48">

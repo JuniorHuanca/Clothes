@@ -20,12 +20,12 @@ const Sidebar = ({ session, setOpen }: Props) => {
 
   return (
     <div
-      className={`fixed top-0 left-0 sm:sticky h-screen min-h-screen sm:min-h-0 z-10 flex flex-col gap-4 p-2 pr-0 min-w-72 bg-indigo-800 text-white`}
+      className={`fixed top-0 left-0 sm:sticky h-screen min-h-screen sm:min-h-0 z-10 flex flex-col gap-4 p-3 pr-0 min-w-72 bg-indigo-800 text-white`}
     >
       <div className="flex justify-between pr-2 z-10">
         <span className="text-xl font-extrabold">E-commerce</span>
         <button type="button" onClick={() => setOpen(false)}>
-          <Tooltip text="Cerrar menú" icon={<Menu />} />
+          <Tooltip text="Cerrar menú" icon={<Menu />} alignment="right"/>
         </button>
       </div>
       <div className="h-full flex flex-col gap-4 overflow-y-auto">
