@@ -1,5 +1,6 @@
 import { Facebook, Github, Instagram, Shirt, Twitter } from "lucide-react";
 import Link from "next/link";
+import Tooltip from "./Tooltip";
 
 type Props = {};
 
@@ -50,7 +51,11 @@ const Footer = (props: Props) => {
               className="text-gray-700 transition hover:text-gray-700/75"
             >
               <span className="sr-only">Facebook</span>
-              <Facebook />
+              <Tooltip
+                text="Facebook"
+                icon={<Facebook />}
+                alignment="top"
+              />
             </Link>
           </li>
 
@@ -62,7 +67,11 @@ const Footer = (props: Props) => {
               className="text-gray-700 transition hover:text-gray-700/75"
             >
               <span className="sr-only">Instagram</span>
-              <Instagram />
+              <Tooltip
+                text="Instagram"
+                icon={<Instagram />}
+                alignment="top"
+              />
             </Link>
           </li>
 
@@ -74,7 +83,11 @@ const Footer = (props: Props) => {
               className="text-gray-700 transition hover:text-gray-700/75"
             >
               <span className="sr-only">Twitter</span>
-              <Twitter />
+              <Tooltip
+                text="Twitter"
+                icon={<Twitter />}
+                alignment="top"
+              />
             </Link>
           </li>
 
@@ -86,7 +99,11 @@ const Footer = (props: Props) => {
               className="text-gray-700 transition hover:text-gray-700/75"
             >
               <span className="sr-only">GitHub</span>
-              <Github />
+              <Tooltip
+                text="GitHub"
+                icon={<Github />}
+                alignment="top"
+              />
             </Link>
           </li>
         </ul>

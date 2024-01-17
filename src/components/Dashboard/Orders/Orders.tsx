@@ -113,7 +113,7 @@ const Orders = ({ data }: Props) => {
   return (
     <>
       {ordersSelecteds.length > 0 && (
-        <div className="flex items-center justify-between p-4 bg-blue-500 w-full">
+        <div className="flex items-center justify-between p-4 bg-indigo-800 w-full text-white">
           <span>
             Seleccionados: {ordersSelecteds.length} / {data.length}
           </span>
@@ -143,7 +143,7 @@ const Orders = ({ data }: Props) => {
           </details>
           <button
             onClick={selectAll}
-            className="bg-white text-blue-500 py-2 px-4 rounded"
+            className="bg-white text-indigo-800 py-2 px-4 rounded"
           >
             {isAllSelected ? "Desmarcar Todos" : "Marcar Todos"}
           </button>

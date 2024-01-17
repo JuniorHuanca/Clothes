@@ -18,7 +18,7 @@ const Deliveries = ({
   const [search, setSearch] = useState("");
 
   return (
-    <div className="flex justify-center items-center fixed top-0 right-0 w-screen h-screen bg-black/30 z-50">
+    <div className="flex justify-center items-center fixed top-0 right-0 w-screen h-screen bg-black/30 z-50 text-black">
       <div
         className={`w-full sm:w-[40%] max-w-[500px] h-auto bg-white p-6 rounded-lg`}
       >

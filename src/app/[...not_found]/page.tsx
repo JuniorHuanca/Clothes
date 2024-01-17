@@ -3,7 +3,9 @@ import Link from "next/link";
 
 type Props = {};
 export const metadata: Metadata = {
-  title: "Página no encontrada · Clothes E-commerce",
+  title: {
+    absolute: "Página no encontrada · Clothes E-commerce",
+  },
 };
 const PageNotFound = (props: Props) => {
   return (

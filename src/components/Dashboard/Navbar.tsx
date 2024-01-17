@@ -6,6 +6,8 @@ import {
   Menu,
   MessageSquareMore,
   Settings,
+  MoonStar,
+  Lightbulb,
 } from "lucide-react";
 import Image from "next/image";
 import Tooltip from "../Tooltip";
@@ -26,16 +28,32 @@ const Navbar = ({ setOpen, isOpen, session: { user } }: Props) => {
           </button>
         )}
         <div className="w-full flex justify-end">
-          <div className="flex gap-4 items-center px-2">
-            <button type="button">
-              <Tooltip text="Notificaciones" icon={<Bell />} />
-            </button>
-            <button type="button">
-              <Tooltip text="Configuración" icon={<Settings />} />
-            </button>
-            <button type="button">
-              <Tooltip text="Mensajes" icon={<MessageSquareMore />} />
-            </button>
+          <div className="flex-1 flex justify-between items-center">
+            <div>
+              {/* <span className="text-xl font-extrabold px-2">Dashboard</span> */}
+              <button type="button" className="px-2">
+                <Tooltip
+                  text="Modo oscuro"
+                  icon={<MoonStar />}
+                  alignment="right"
+                />
+              </button>
+              <button type="button" className="px-2">
+                <Tooltip
+                  text="Configuración"
+                  icon={<Settings />}
+                  alignment="right"
+                />
+              </button>
+            </div>
+            <div className="flex gap-4 items-center px-2">
+              <button type="button">
+                <Tooltip text="Notificaciones" icon={<Bell />} />
+              </button>
+              <button type="button">
+                <Tooltip text="Mensajes" icon={<MessageSquareMore />} />
+              </button>
+            </div>
           </div>
           <div className="flex gap-1 items-center bg-gray-200 px-1 rounded-md shadow-md max-w-48">
             <div className="min-w-10">
