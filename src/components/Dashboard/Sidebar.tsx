@@ -25,7 +25,7 @@ const Sidebar = ({ session, setOpen }: Props) => {
       <div className="flex justify-between pr-2 z-10">
         <span className="text-xl font-extrabold">E-commerce</span>
         <button type="button" onClick={() => setOpen(false)}>
-          <Tooltip text="Cerrar menú" icon={<Menu />} alignment="right"/>
+          <Tooltip text="Cerrar menú" icon={<Menu />} alignment="right" />
         </button>
       </div>
       <div className="h-full flex flex-col gap-4 overflow-y-auto">

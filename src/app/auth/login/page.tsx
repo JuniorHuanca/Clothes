@@ -1,9 +1,21 @@
+"use client";
 import Providers from "@/components/Auth/Providers";
+import Input from "@/components/Custom/Input";
+import { signIn } from "next-auth/react";
 import Link from "next/link";
+import { ChangeEvent } from "react";
 
 type Props = {};
 
 const Login = (props: Props) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const res = await signIn("credentials", {
+      username: "userName.current",
+      password: "pass.current",
+      redirect: false,
+    });
+  };
   return (
     <main className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white p-8 rounded shadow-md w-96">
@@ -11,40 +23,57 @@ const Login = (props: Props) => {
         <Providers />
         <form>
           <div className="mb-4">
-            <label
-              htmlFor="username"
-              className="block text-sm font-medium text-gray-600"
+            <Input
+              type={"text"}
+              label={"text"}
+              value={""}
+              name={""}
+              placeholder={""}
+              error={false}
+              onChange={function (e: ChangeEvent<HTMLInputElement>): void {
+                throw new Error("Function not implemented.");
+              }}
+            />
+            <button
+              type="submit"
+              className="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition"
             >
-              Nombre de Usuario
-            </label>
-            <input
-              type="text"
-              id="username"
-              name="username"
-              className="mt-1 p-2 border w-full rounded-md"
-              placeholder="Ingresa tu nombre de usuario"
+              Iniciar Sesión con correo electrónico
+            </button>
+          </div>
+        </form>
+        <form onSubmit={onSubmit}>
+          <div className="mb-4">
+            <Input
+              type={"text"}
+              label={"text"}
+              value={""}
+              name={""}
+              placeholder={""}
+              error={false}
+              onChange={function (e: ChangeEvent<HTMLInputElement>): void {
+                throw new Error("Function not implemented.");
+              }}
             />
           </div>
           <div className="mb-4">
-            <label
-              htmlFor="password"
-              className="block text-sm font-medium text-gray-600"
-            >
-              Contraseña
-            </label>
-            <input
+            <Input
               type="password"
-              id="password"
-              name="password"
-              className="mt-1 p-2 border w-full rounded-md"
-              placeholder="Ingresa tu contraseña"
+              label="password"
+              value={""}
+              name={""}
+              placeholder={""}
+              error={false}
+              onChange={function (e: ChangeEvent<HTMLInputElement>): void {
+                throw new Error("Function not implemented.");
+              }}
             />
           </div>
           <button
             type="submit"
             className="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition"
           >
-            Iniciar Sesión
+            Iniciar Sesión con credenciales
           </button>
         </form>
         <p className="mt-4 text-sm text-gray-600">

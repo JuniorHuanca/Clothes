@@ -6,6 +6,7 @@ import Deliveries from "@/components/Modals/Deliveries";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { ChevronDown, UserMinus, UserPlus } from "lucide-react";
+import Confirmation from "@/components/Modals/Confirmation";
 
 type Props = { data: IOrder[] };
 const Orders = ({ data }: Props) => {
@@ -14,6 +15,8 @@ const Orders = ({ data }: Props) => {
   const [ordersSelecteds, setOrdersSelecteds] = useState<IOrder[]>([]);
   const [selectedDelivery, setSelectedDelivery] = useState<IUser | null>(null);
   const [loading, setLoading] = useState(false);
+  const [removeAssignConfirmation, setRemoveAssignConfirmation] =
+    useState(false);
   const hasDeliveryAssigned = () => {
     return ordersSelecteds.some(
       (e) =>
@@ -137,7 +140,7 @@ const Orders = ({ data }: Props) => {
               <button
                 type="button"
                 className="flex gap-3 rounded-md p-1 hover:bg-slate-200"
-                onClick={handleRemoveAssign}
+                onClick={() => setRemoveAssignConfirmation(true)}
                 disabled={loading}
               >
                 <UserMinus /> Quitar Repartidor
@@ -174,6 +177,16 @@ const Orders = ({ data }: Props) => {
           <p className="text-center">Usuarios no encontrados</p>
         )}
       </div>
+      {removeAssignConfirmation && (
+        <Confirmation
+          title="Quitar repartidor"
+          message="¿Está seguro de que desea quitar el repartidor de los pedidos seleccionados? Los pedidos quedarán sin un repartidor a partir de ahora. Podrá modificar esto más tarde si es necesario."
+          confirmText="Aceptar"
+          cancelText="Cancelar"
+          onConfirm={handleRemoveAssign}
+          onCancel={() => setRemoveAssignConfirmation(false)}
+        />
+      )}
     </>
   );
 };
