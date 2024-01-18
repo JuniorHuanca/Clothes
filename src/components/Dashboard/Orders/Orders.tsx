@@ -5,6 +5,7 @@ import { useState } from "react";
 import Deliveries from "@/components/Modals/Deliveries";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { ChevronDown, UserMinus, UserPlus } from "lucide-react";
 
 type Props = { data: IOrder[] };
 const Orders = ({ data }: Props) => {
@@ -118,26 +119,28 @@ const Orders = ({ data }: Props) => {
             Seleccionados: {ordersSelecteds.length} / {data.length}
           </span>
           <details className="relative group">
-            <summary className="flex cursor-pointer items-center justify-between bg-white p-2 text-gray-900 transition">
+            <summary className="flex cursor-pointer items-center justify-between bg-white p-2 text-gray-900 transition rounded">
               <span className="text-sm font-medium">Entrega</span>
-              {/* <span className="transition group-open:-rotate-180">icon</span> */}
+              <span className="transition group-open:-rotate-180">
+                <ChevronDown />
+              </span>
             </summary>
-            <div className="hidden group-open:flex flex-col w-44 absolute left-1/2 transform -translate-x-1/2 bg-yellow-500">
+            <div className="hidden group-open:flex flex-col w-48 absolute left-1/2 transform -translate-x-1/2 bg-white text-black p-1 rounded-md shadow-md shadow-gray-700">
               <button
                 type="button"
-                className=""
+                className="flex gap-2 rounded-md p-1 hover:bg-slate-200"
                 onClick={() => setShowModalDeliveries(true)}
                 disabled={loading}
               >
-                Asignar Repartidor
+                <UserPlus /> Asignar Repartidor
               </button>
               <button
                 type="button"
-                className=""
+                className="flex gap-3 rounded-md p-1 hover:bg-slate-200"
                 onClick={handleRemoveAssign}
                 disabled={loading}
               >
-                Quitar Repartidor
+                <UserMinus /> Quitar Repartidor
               </button>
             </div>
           </details>

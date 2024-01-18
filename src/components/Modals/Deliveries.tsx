@@ -29,14 +29,14 @@ const Deliveries = ({
           <p>Eliga el repartidor</p>
           <div className="">
             <input value={search} onChange={(e) => setSearch(e.target.value)} />
-            <div className="bg-yellow-500 top-0 flex flex-col gap-2 h-60 overflow-y-auto">
+            <div className="top-0 flex flex-col gap-2 h-60 overflow-y-auto p-2">
               {deliveries.map((delivery) => (
                 <button
                   type="button"
-                  className={`p-2  ${
+                  className={`p-2 rounded-lg text-white ${
                     selectedDelivery?.id === delivery.id
-                      ? "bg-red-500"
-                      : "bg-green-500"
+                      ? "bg-indigo-800 ring-offset-2 ring-offset-white ring-indigo-800 ring-2"
+                      : "bg-gray-800"
                   }`}
                   key={delivery.id}
                   value={delivery.id}
@@ -49,14 +49,14 @@ const Deliveries = ({
           </div>
           <div className="w-full flex justify-evenly">
             <button
-              className="p-3 rounded-lg bg-red-500 hover:bg-red-600 text-white"
+              className="p-3 rounded-lg bg-green-500 hover:bg-green-600 text-white"
               type="button"
               onClick={onConfirm}
             >
               Guardar
             </button>
             <button
-              className="p-3 rounded-lg bg-green-500 hover:bg-green-600 text-white"
+              className="p-3 rounded-lg bg-red-500 hover:bg-red-600 text-white"
               type="button"
               onClick={onCancel}
             >

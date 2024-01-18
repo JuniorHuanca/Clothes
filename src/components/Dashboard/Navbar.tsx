@@ -8,9 +8,11 @@ import {
   Settings,
   MoonStar,
   Lightbulb,
+  LogOut,
 } from "lucide-react";
 import Image from "next/image";
 import Tooltip from "../Tooltip";
+import { signOut } from "next-auth/react";
 
 type Props = {
   session: Session;
@@ -55,8 +57,8 @@ const Navbar = ({ setOpen, isOpen, session: { user } }: Props) => {
               </button>
             </div>
           </div>
-          <div className="flex gap-1 items-center bg-gray-200 px-1 rounded-md shadow-md max-w-48">
-            <div className="min-w-10">
+          <div className="flex gap-1 items-center bg-slate-100 px-1 rounded-md shadow-sm max-w-56">
+            <div className="hidden sm:block flex-none">
               {!user.image && <CircleUser size={40} />}
               {user.image && (
                 <Image
@@ -67,12 +69,23 @@ const Navbar = ({ setOpen, isOpen, session: { user } }: Props) => {
                 />
               )}
             </div>
-            <div>
+            <div className="hidden sm:block">
               <p className="text-lg font-bold line-clamp-1">{user.name}</p>
               <p className="text-sm text-gray-600 line-clamp-1">
                 {user.role.name}
               </p>
             </div>
+            <button
+              type="button"
+              className="flex-none sm:p-2"
+              onClick={() => signOut()}
+            >
+              <Tooltip
+                text="Cerrar sesión"
+                icon={<LogOut />}
+                alignment="left"
+              />
+            </button>
           </div>
         </div>
       </div>
