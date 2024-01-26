@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { toast } from "sonner";
@@ -33,8 +33,12 @@ const EmailLogin = (props: Props) => {
       });
       if (response?.ok) {
         resetForm();
-        toast.loading("Redirigiendo...");
-        // router.push((router.query.callbackUrl as string) || "/");
+        toast.info(
+          "El correo ha sido enviado exitosamente. Puede cerrar esta pestaña. Gracias.",
+          {
+            duration: 7000,
+          }
+        );
       } else {
         toast.error(response?.error as string);
       }
@@ -43,16 +47,15 @@ const EmailLogin = (props: Props) => {
     }
   }
   return (
-    <form onSubmit={formik.handleSubmit}>
-      <div className="mb-4">
-        <Input formik={formik} fieldName="email" fieldNameTranslate="Email" />
-        <button
-          type="submit"
-          className="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition"
-        >
-          Iniciar Sesión con correo electrónico
-        </button>
-      </div>
+    <form onSubmit={formik.handleSubmit} className="flex flex-col gap-4 py-2">
+      <Input formik={formik} fieldName="email" fieldNameTranslate="Email" />
+      <button
+        type="submit"
+        className="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition disabled:opacity-50"
+        disabled={formik.isSubmitting}
+      >
+        Iniciar Sesión con correo electrónico
+      </button>
     </form>
   );
 };

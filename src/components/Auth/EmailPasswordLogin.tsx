@@ -47,7 +47,6 @@ const EmailPasswordLogin = (props: Props) => {
       });
       if (response?.ok) {
         resetForm();
-        toast.loading("Redirigiendo...");
         router.push(callbackUrl || "/");
       } else {
         toast.error(response?.error as string);
@@ -57,7 +56,7 @@ const EmailPasswordLogin = (props: Props) => {
     }
   }
   return (
-    <form onSubmit={formik.handleSubmit}>
+    <form onSubmit={formik.handleSubmit} className="flex flex-col gap-4 py-2">
       <Input formik={formik} fieldName="email" fieldNameTranslate="Email" />
       <Input
         formik={formik}
