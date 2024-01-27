@@ -52,7 +52,7 @@ const Register = (props: Props) => {
       });
       if (response.ok) {
         resetForm();
-        toast.loading("Redirigiendo...");
+        toast.success("Cuenta creada.");
         router.push("/auth/login");
       } else {
         toast.error(response.statusText);

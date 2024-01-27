@@ -1,7 +1,6 @@
 "use client";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { toast } from "sonner";
 import { FormValues } from "@/shared/types";
 import { signIn } from "next-auth/react";
 import Input from "../Custom/Input";
@@ -26,25 +25,10 @@ const EmailLogin = (props: Props) => {
     values: FormValues,
     { resetForm }: { resetForm: () => void }
   ) {
-    try {
-      const response = await signIn("email", {
-        redirect: false,
-        email: values.email,
-      });
-      if (response?.ok) {
-        resetForm();
-        toast.info(
-          "El correo ha sido enviado exitosamente. Puede cerrar esta pestaña. Gracias.",
-          {
-            duration: 7000,
-          }
-        );
-      } else {
-        toast.error(response?.error as string);
-      }
-    } catch (error) {
-      toast.error("Ocurrió un error, por favor intente nuevamente.");
-    }
+    await signIn("email", {
+      email: values.email,
+    });
+    resetForm();
   }
   return (
     <form onSubmit={formik.handleSubmit} className="flex flex-col gap-4 py-2">

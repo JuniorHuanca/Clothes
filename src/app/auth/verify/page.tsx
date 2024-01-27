@@ -1,55 +1,27 @@
-import { useFormik } from "formik";
-import * as Yup from "yup";
-import { toast } from "sonner";
-import { FormValues } from "@/shared/types";
-import { signIn } from "next-auth/react";
-import Input from "@/components/Custom/Input";
+import { MailCheck } from "lucide-react";
+import Link from "next/link";
+
 type Props = {};
 
 const Verify = (props: Props) => {
-  const initialValues = {
-    token: "",
-  };
-  const validationSchema = Yup.object().shape({
-    token: Yup.string().required("El token es requerido"),
-  });
-  const formik = useFormik({
-    initialValues,
-    validationSchema,
-    onSubmit,
-  });
-  async function onSubmit(
-    values: FormValues,
-    { resetForm }: { resetForm: () => void }
-  ) {
-    try {
-      const response = await signIn("token", {
-        redirect: false,
-        token: values.token,
-      });
-      if (response?.ok) {
-        resetForm();
-        toast.loading("Redirigiendo...");
-        // router.push((router.query.callbackUrl as string) || "/");
-      } else {
-        toast.error(response?.error as string);
-      }
-    } catch (error) {
-      toast.error("Ocurrió un error, por favor intente nuevamente.");
-    }
-  }
   return (
-    <form onSubmit={formik.handleSubmit}>
-      <div className="mb-4">
-        <Input formik={formik} fieldName="token" fieldNameTranslate="Email" />
-        <button
-          type="submit"
-          className="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition"
-        >
-          Iniciar Sesión con correo electrónico
-        </button>
+    <div className="flex h-screen flex-col bg-white">
+      <img
+        src="https://images.unsplash.com/photo-1558769132-cb1aea458c5e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1548&q=80"
+        alt=""
+        className="h-64 w-full object-cover"
+      />
+
+      <div className="flex flex-1 items-center justify-center">
+        <div className="mx-auto max-w-xl px-4 py-8 text-center flex flex-col items-center">
+          <p className="text-2xl font-bold tracking-tight text-gray-800 sm:text-4xl">
+            Correo enviado.
+          </p>
+          <p className="mt-4 text-gray-500">Puedes cerrar esta pestaña ahora</p>
+          <MailCheck size={128} className="text-indigo-600" />
+        </div>
       </div>
-    </form>
+    </div>
   );
 };
 
