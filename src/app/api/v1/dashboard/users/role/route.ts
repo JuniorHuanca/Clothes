@@ -18,7 +18,11 @@ export async function PATCH(request: Request) {
     }
     const updateUser = await prisma.user.update({
       where: { email },
-      data: { roleId },
+      data: {
+        roleId,
+        assignedOrders: { set: [] },
+        // ...(roleId !== 3 && { assignedOrders: { set: [] } })
+      },
     });
     return Response.json(
       { message: "role changed successfully", user: updateUser },

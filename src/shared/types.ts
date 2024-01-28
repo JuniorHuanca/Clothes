@@ -21,3 +21,7 @@ export interface IOrder {
   deliveryUserId: string;
   deliveryUser: IUser;
 }
+
+export interface FormValues {
+  [key: string]: string;
+}

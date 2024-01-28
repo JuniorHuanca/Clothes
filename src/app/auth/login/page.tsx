@@ -1,83 +1,27 @@
-"use client";
 import Providers from "@/components/Auth/Providers";
-import Input from "@/components/Custom/Input";
-import { signIn } from "next-auth/react";
 import Link from "next/link";
-import { ChangeEvent } from "react";
-
+import EmailLogin from "@/components/Auth/EmailLogin";
+import EmailPasswordLogin from "@/components/Auth/EmailPasswordLogin";
+import { authOptions } from "@/shared/authOptions";
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
 type Props = {};
 
-const Login = (props: Props) => {
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const res = await signIn("credentials", {
-      username: "userName.current",
-      password: "pass.current",
-      redirect: false,
-    });
-  };
+const Login = async (props: Props) => {
+  const session = await getServerSession(authOptions);
+  if (session) redirect("/");
   return (
     <main className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="bg-white p-8 rounded shadow-md w-96">
+      <div className="bg-white p-2 sm:p-8 rounded shadow-md sm:w-96">
         <h1 className="text-2xl font-semibold mb-4">Inicio de Sesión</h1>
         <Providers />
-        <form>
-          <div className="mb-4">
-            <Input
-              type={"text"}
-              label={"text"}
-              value={""}
-              name={""}
-              placeholder={""}
-              error={false}
-              onChange={function (e: ChangeEvent<HTMLInputElement>): void {
-                throw new Error("Function not implemented.");
-              }}
-            />
-            <button
-              type="submit"
-              className="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition"
-            >
-              Iniciar Sesión con correo electrónico
-            </button>
-          </div>
-        </form>
-        <form onSubmit={onSubmit}>
-          <div className="mb-4">
-            <Input
-              type={"text"}
-              label={"text"}
-              value={""}
-              name={""}
-              placeholder={""}
-              error={false}
-              onChange={function (e: ChangeEvent<HTMLInputElement>): void {
-                throw new Error("Function not implemented.");
-              }}
-            />
-          </div>
-          <div className="mb-4">
-            <Input
-              type="password"
-              label="password"
-              value={""}
-              name={""}
-              placeholder={""}
-              error={false}
-              onChange={function (e: ChangeEvent<HTMLInputElement>): void {
-                throw new Error("Function not implemented.");
-              }}
-            />
-          </div>
-          <button
-            type="submit"
-            className="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition"
-          >
-            Iniciar Sesión con credenciales
-          </button>
-        </form>
-        <p className="mt-4 text-sm text-gray-600">
-          ¿No tienes una cuenta? <Link href="/registro">Regístrate</Link>
+        <EmailLogin />
+        <EmailPasswordLogin />
+        <p className="text-sm font-bold text-center">
+          ¿No tienes una cuenta?{" "}
+          <Link href="/auth/register" className="underline">
+            Regístrate
+          </Link>
         </p>
       </div>
     </main>
