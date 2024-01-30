@@ -1,11 +1,14 @@
 "use client";
-import { Menu, Shirt } from "lucide-react";
-import { signIn } from "next-auth/react";
+import { CircleUser, LogOut, Menu, Shirt } from "lucide-react";
+import { signIn, signOut, useSession } from "next-auth/react";
+import Image from "next/image";
 import Link from "next/link";
+import Tooltip from "./Tooltip";
 
 type Props = {};
 
 const Navbar = (props: Props) => {
+  const { data: session } = useSession();
   const links = [
     { name: "Inicio", route: "/" },
     { name: "Productos", route: "/products" },
@@ -20,10 +23,10 @@ const Navbar = (props: Props) => {
   ];
   return (
     <header>
-      <div className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-screen-xl px-4">
         <div className="flex h-16 items-center justify-between">
           <div className="md:flex md:items-center md:gap-12">
-            <Link className="block text-teal-600" href="/">
+            <Link className="block text-rose-600" href="/">
               <span className="sr-only">Home</span>
               <Shirt size={48} />
             </Link>
@@ -34,7 +37,8 @@ const Navbar = (props: Props) => {
               {links.map((e) => (
                 <li key={e.name}>
                   <Link
-                    className="text-gray-500 transition hover:text-gray-500/75"
+                    title={`Ir a ${e.name}`}
+                    className="relative w-fit block after:block after:content-[''] after:absolute after:h-[2px] after:bg-rose-600 after:w-full after:scale-x-0 after:hover:scale-x-100 after:transition after:duration-300 after:origin-left hover:text-rose-600 text-base text-gray-700"
                     href={e.route}
                   >
                     {e.name}
@@ -44,35 +48,51 @@ const Navbar = (props: Props) => {
             </ul>
           </div>
 
-          <div className="flex items-center gap-4">
-            <div className="sm:flex sm:gap-4">
-              <button
-                type="button"
-                className="rounded-md bg-teal-600 px-5 py-2.5 text-sm font-medium text-white shadow"
-                onClick={() => signIn()}
-              >
-                Iniciar sesión
-              </button>
-
-              <div className="hidden sm:flex">
-                <Link
-                  className="rounded-md bg-gray-100 px-5 py-2.5 text-sm font-medium text-teal-600"
-                  href="/auth/register"
+          {!session && (
+            <div className="flex items-center gap-4">
+              <div className="sm:flex sm:gap-4">
+                <button
+                  type="button"
+                  className="rounded-md bg-teal-600 px-5 py-2.5 text-sm font-medium text-white shadow"
+                  onClick={() => signIn()}
                 >
-                  Registrarse
-                </Link>
+                  Iniciar sesión
+                </button>
+
+                <div className="hidden sm:flex">
+                  <Link
+                    className="rounded-md bg-gray-100 px-5 py-2.5 text-sm font-medium text-teal-600"
+                    href="/auth/register"
+                  >
+                    Registrarse
+                  </Link>
+                </div>
+              </div>
+
+              <div className="block md:hidden">
+                <button
+                  type="button"
+                  className="rounded bg-gray-100 p-2 text-gray-600 transition hover:text-gray-600/75"
+                >
+                  <Menu />
+                </button>
               </div>
             </div>
-
-            <div className="block md:hidden">
-              <button
-                type="button"
-                className="rounded bg-gray-100 p-2 text-gray-600 transition hover:text-gray-600/75"
-              >
-                <Menu />
-              </button>
+          )}
+          {session && (
+            <div>
+              {!session.user.image && <CircleUser size={40} />}
+              {session.user.image && (
+                <Image
+                  src={session.user.image}
+                  height={40}
+                  width={40}
+                  alt={session.user.name}
+                  className="rounded-full"
+                />
+              )}
             </div>
-          </div>
+          )}
         </div>
       </div>
     </header>

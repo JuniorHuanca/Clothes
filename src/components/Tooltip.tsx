@@ -1,24 +1,24 @@
 type Props = {
   text: string;
   icon: React.ReactNode;
-  alignment?: "left" | "right" | "top" | "button";
+  alignment?: "left" | "right" | "top" | "bottom";
 };
 
 const alignmentBox = {
   left: "top-1/2 transform -translate-y-1/2 right-[120%]",
   right: "top-1/2 transform -translate-y-1/2 left-[120%]",
   top: "left-1/2 transform -translate-x-1/2 bottom-[130%]",
-  button: "left-1/2 transform -translate-x-1/2 top-[130%]",
+  bottom: "left-1/2 transform -translate-x-1/2 top-[130%]",
 };
 
 const alignmentArrow = {
   left: "top-1/2 transform -translate-y-1/2 -right-[2%]",
   right: "top-1/2 transform -translate-y-1/2 -left-[2%]",
   top: "left-1/2 transform -translate-x-1/2 -bottom-[10%]",
-  button: "left-1/2 transform -translate-x-1/2 -top-[10%]",
+  bottom: "left-1/2 transform -translate-x-1/2 -top-[10%]",
 };
 
-const Tooltip = ({ icon, text, alignment = "button" }: Props) => {
+const Tooltip = ({ icon, text, alignment = "bottom" }: Props) => {
   return (
     <div className="relative inline-block">
       <div className="peer relative">{icon}</div>
