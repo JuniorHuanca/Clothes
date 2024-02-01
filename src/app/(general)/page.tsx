@@ -67,7 +67,7 @@ export default function Home() {
                     Casual Trainers
                   </h3>
 
-                  <span className="mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium uppercase tracking-wide text-white">
+                  <span className="mt-1.5 inline-block bg-rose-600 px-5 py-3 text-xs font-medium uppercase tracking-wide text-white">
                     Shop Now
                   </span>
                 </div>
@@ -87,7 +87,7 @@ export default function Home() {
                     Winter Jumpers
                   </h3>
 
-                  <span className="mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium uppercase tracking-wide text-white">
+                  <span className="mt-1.5 inline-block bg-rose-600 px-5 py-3 text-xs font-medium uppercase tracking-wide text-white">
                     Shop Now
                   </span>
                 </div>
@@ -107,7 +107,7 @@ export default function Home() {
                     Skinny Jeans Blue
                   </h3>
 
-                  <span className="mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium uppercase tracking-wide text-white">
+                  <span className="mt-1.5 inline-block bg-rose-600 px-5 py-3 text-xs font-medium uppercase tracking-wide text-white">
                     Shop Now
                   </span>
                 </div>
@@ -250,7 +250,7 @@ export default function Home() {
 
               <a
                 href="#"
-                className="mt-8 inline-block rounded bg-indigo-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-indigo-700 focus:outline-none focus:ring focus:ring-yellow-400"
+                className="mt-8 inline-block rounded bg-rose-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-rose-700 focus:outline-none focus:ring focus:ring-yellow-400"
               >
                 Get Started Today
               </a>

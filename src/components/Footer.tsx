@@ -20,7 +20,7 @@ const Footer = (props: Props) => {
   return (
     <footer>
       <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6 lg:px-8">
-        <div className="flex justify-center text-teal-600">
+        <div className="flex justify-center text-rose-600">
           <Shirt size={50} fill="currentColor" />
         </div>
 
@@ -33,7 +33,7 @@ const Footer = (props: Props) => {
           {links.map((e) => (
             <li key={e.name}>
               <Link
-                className="text-gray-700 transition hover:text-gray-700/75"
+                className="relative w-fit block after:block after:content-[''] after:absolute after:h-[2px] after:bg-rose-600 after:w-full after:scale-x-0 after:hover:scale-x-100 after:transition after:duration-300 after:origin-left hover:text-rose-600 text-base text-gray-700"
                 href={e.route}
               >
                 {e.name}
@@ -48,14 +48,10 @@ const Footer = (props: Props) => {
               href="/"
               rel="noreferrer"
               target="_blank"
-              className="text-gray-700 transition hover:text-gray-700/75"
+              className="text-rose-700 transition hover:text-rose-700/75"
             >
               <span className="sr-only">Facebook</span>
-              <Tooltip
-                text="Facebook"
-                icon={<Facebook />}
-                alignment="top"
-              />
+              <Tooltip text="Facebook" icon={<Facebook />} alignment="top" />
             </Link>
           </li>
 
@@ -64,14 +60,10 @@ const Footer = (props: Props) => {
               href="/"
               rel="noreferrer"
               target="_blank"
-              className="text-gray-700 transition hover:text-gray-700/75"
+              className="text-rose-700 transition hover:text-rose-700/75"
             >
               <span className="sr-only">Instagram</span>
-              <Tooltip
-                text="Instagram"
-                icon={<Instagram />}
-                alignment="top"
-              />
+              <Tooltip text="Instagram" icon={<Instagram />} alignment="top" />
             </Link>
           </li>
 
@@ -80,14 +72,10 @@ const Footer = (props: Props) => {
               href="/"
               rel="noreferrer"
               target="_blank"
-              className="text-gray-700 transition hover:text-gray-700/75"
+              className="text-rose-700 transition hover:text-rose-700/75"
             >
               <span className="sr-only">Twitter</span>
-              <Tooltip
-                text="Twitter"
-                icon={<Twitter />}
-                alignment="top"
-              />
+              <Tooltip text="Twitter" icon={<Twitter />} alignment="top" />
             </Link>
           </li>
 
@@ -96,14 +84,10 @@ const Footer = (props: Props) => {
               href="/"
               rel="noreferrer"
               target="_blank"
-              className="text-gray-700 transition hover:text-gray-700/75"
+              className="text-rose-700 transition hover:text-rose-700/75"
             >
               <span className="sr-only">GitHub</span>
-              <Tooltip
-                text="GitHub"
-                icon={<Github />}
-                alignment="top"
-              />
+              <Tooltip text="GitHub" icon={<Github />} alignment="top" />
             </Link>
           </li>
         </ul>
