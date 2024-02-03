@@ -10,6 +10,7 @@ const Breadcrumb = (props: Props) => {
   const pathname = usePathname();
   const translations: { [key: string]: string } = {
     products: "Productos",
+    newproduct: "Nuevo Producto",
     dashboard: "Panel de control",
     orders: "Pedidos",
     users: "Usuarios",

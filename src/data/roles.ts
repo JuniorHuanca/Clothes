@@ -6,6 +6,7 @@ export const baseRoles = [
       "/dashboard",
       "/dashboard/users",
       "/dashboard/products",
+      "/dashboard/newproduct",
       "/dashboard/orders",
     ],
   },

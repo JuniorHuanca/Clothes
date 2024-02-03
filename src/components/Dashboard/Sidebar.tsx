@@ -1,4 +1,4 @@
-import { Menu } from "lucide-react";
+import { Menu, PackagePlus } from "lucide-react";
 import { Session } from "next-auth";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -15,6 +15,11 @@ const Sidebar = ({ session, setOpen }: Props) => {
     { name: "Panel de control", route: "/dashboard", icon: <Home /> },
     { name: "Usuarios", route: "/dashboard/users", icon: <Users /> },
     { name: "Productos", route: "/dashboard/products", icon: <Package /> },
+    {
+      name: "Nuevo Producto",
+      route: "/dashboard/newproduct",
+      icon: <PackagePlus />,
+    },
     { name: "Pedidos", route: "/dashboard/orders", icon: <ShoppingBag /> },
   ];
 
