@@ -23,13 +23,16 @@ const NewProduct = (props: Props) => {
   return (
     <div>
       <h2>Add New Products</h2>
-      {Array.from({ length: numProducts }, (_, index) => (
-        <Form
-          key={index}
-          formData={formDataList[index]}
-          onChange={(data) => handleFormChange(index, data)}
-        />
-      ))}
+      <div className="flex flex-col gap-2">
+        {Array.from({ length: numProducts }, (_, index) => (
+          <Form
+            key={index}
+            formKey={index + 1}
+            formData={formDataList[index] || {}}
+            onChange={(data) => handleFormChange(index, data)}
+          />
+        ))}
+      </div>
       <button onClick={() => setNumProducts(numProducts + 1)}>
         Add Another Product
       </button>
