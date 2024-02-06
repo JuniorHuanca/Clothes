@@ -23,7 +23,7 @@ const NewProduct = (props: Props) => {
   return (
     <div>
       <h2>Add New Products</h2>
-      <div className="flex flex-col gap-2 p-2">
+      <z className="flex flex-col gap-2 p-2">
         {Array.from({ length: numProducts }, (_, index) => (
           <Form
             key={index}
@@ -32,7 +32,7 @@ const NewProduct = (props: Props) => {
             onChange={(data) => handleFormChange(index, data)}
           />
         ))}
-      </div>
+      </z>
       <button onClick={() => setNumProducts(numProducts + 1)}>
         Add Another Product
       </button>
