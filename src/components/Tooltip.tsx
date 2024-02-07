@@ -20,8 +20,8 @@ const alignmentArrow = {
 
 const Tooltip = ({ icon, text, alignment = "bottom" }: Props) => {
   return (
-    <div className="relative inline-block">
-      <div className="peer relative">{icon}</div>
+    <div className="relative">
+      <span className="peer relative">{icon}</span>
       <div
         className={`w-max absolute hidden peer-hover:block bg-black p-2 rounded-md shadow-md text-white text-center z-10 ${alignmentBox[alignment]}`}
       >

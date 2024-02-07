@@ -25,3 +25,16 @@ export interface IOrder {
 export interface FormValues {
   [key: string]: string;
 }
+
+export interface FormDataNewProduct {
+  description: string;
+  images: string[];
+  inStock: number;
+  price: number;
+  sizes: string[];
+  slug: string;
+  type: string;
+  tags: string[];
+  title: string;
+  gender: string;
+}
