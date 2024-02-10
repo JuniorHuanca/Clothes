@@ -1,29 +1,34 @@
 import Breadcrumb from "@/components/Breadcrumb";
-import Card from "@/components/Products/Card";
-import { baseProducts } from "@/data/products";
+import Cards from "@/components/Products/Cards";
+import CardsSkeleton from "@/components/Products/CardsSkeleton";
+import SideMenu from "@/components/Products/SideMenu";
 import { Metadata } from "next";
+import { Suspense } from "react";
 
-type Props = {};
+type Props = {
+  searchParams?: {
+    query?: string;
+    page?: string;
+  };
+};
 
 export const metadata: Metadata = {
   title: "Productos",
 };
 
-const Products = (props: Props) => {
+const Products = async ({ searchParams }: Props) => {
   return (
     <div className="min-h-screen sm:p-3">
-      <Breadcrumb />
       <div className="flex">
-        {/* <div className="bg-red-500 w-60 min-h-screen flex-none"></div> */}
-        <div>
+        <SideMenu />
+        <div className="flex-1">
+          <Breadcrumb />
           <h1 className="text-xl sm:text-3xl font-bold mb-4">
             Todos los productos
           </h1>
-          <div className="flex flex-wrap justify-center gap-2 sm:gap-4">
-            {baseProducts.map((product) => (
-              <Card key={product.slug} product={product} />
-            ))}
-          </div>
+          <Suspense fallback={<CardsSkeleton />}>
+            <Cards searchParams={searchParams} />
+          </Suspense>
         </div>
       </div>
     </div>

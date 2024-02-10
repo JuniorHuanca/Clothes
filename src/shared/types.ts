@@ -1,3 +1,16 @@
+export interface IProduct {
+  description: string;
+  images: string[];
+  inStock: number;
+  price: number;
+  sizes: string[];
+  slug: string;
+  type: string;
+  tags: string[];
+  title: string;
+  gender: string;
+}
+
 export interface IUser {
   id: string;
   name: string;
