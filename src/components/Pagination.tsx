@@ -14,6 +14,9 @@ const Pagination = ({ totalPages }: Props) => {
   const handlePage = (pageNumber: number) => {
     const params = new URLSearchParams(searchParams);
     params.set("page", pageNumber.toString());
+    if (pageNumber === 1) {
+      params.delete("page");
+    }
     push(`${pathname}?${params.toString()}`);
   };
 
