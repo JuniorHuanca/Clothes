@@ -8,59 +8,52 @@ type Props = {};
 const SideMenu = (props: Props) => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const { push } = useRouter();
+  const { replace } = useRouter();
   const genders = searchParams.get("genders");
   const tags = searchParams.get("tags");
-  const gendersArray = genders ? genders.split("&&") : [];
-  const tagsArray = tags ? tags.split("&&") : [];
+  const gendersArray = genders ? genders.split("-") : [];
+  const tagsArray = tags ? tags.split("-") : [];
   const params = new URLSearchParams(searchParams);
+  const updateSearchParams = (key: string, value: string | null) => {
+    params.delete("page");
+    if (value) {
+      const currentValue = params.get(key);
+      if (!currentValue) {
+        params.set(key, value);
+      } else {
+        const valueArray = currentValue.split("-");
+        const valueIndex = valueArray.indexOf(value);
+        if (valueIndex === -1) {
+          valueArray.push(value);
+        } else {
+          valueArray.splice(valueIndex, 1);
+        }
+        if (valueArray.length > 0) {
+          params.set(key, valueArray.join("-"));
+        } else {
+          params.delete(key);
+        }
+      }
+    } else {
+      params.delete(key);
+    }
+    replace(`${pathname}?${params.toString()}`);
+  };
+
   const handleGenders = (gender: string) => {
-    const currentGenders = params.get("genders");
-    if (!currentGenders) {
-      params.set("genders", gender);
-    } else {
-      const gendersArray = currentGenders.split("&&");
-      const genderIndex = gendersArray.indexOf(gender);
-      if (genderIndex === -1) {
-        gendersArray.push(gender);
-      } else {
-        gendersArray.splice(genderIndex, 1);
-      }
-      if (gendersArray.length > 0) {
-        params.set("genders", gendersArray.join("&&"));
-      } else {
-        params.delete("genders");
-      }
-    }
-    push(`${pathname}?${params.toString()}`);
+    updateSearchParams("genders", gender);
   };
+
   const handleGendersReset = () => {
-    params.delete("genders");
-    push(`${pathname}?${params.toString()}`);
+    updateSearchParams("genders", null);
   };
+
   const handleTags = (tag: string) => {
-    const currentTags = params.get("tags");
-    if (!currentTags) {
-      params.set("tags", tag);
-    } else {
-      const tagsArray = currentTags.split("&&");
-      const tagIndex = tagsArray.indexOf(tag);
-      if (tagIndex === -1) {
-        tagsArray.push(tag);
-      } else {
-        tagsArray.splice(tagIndex, 1);
-      }
-      if (tagsArray.length > 0) {
-        params.set("tags", tagsArray.join("&&"));
-      } else {
-        params.delete("tags");
-      }
-    }
-    push(`${pathname}?${params.toString()}`);
+    updateSearchParams("tags", tag);
   };
+
   const handleTagsReset = () => {
-    params.delete("tags");
-    push(`${pathname}?${params.toString()}`);
+    updateSearchParams("tags", null);
   };
 
   return (
@@ -81,8 +74,9 @@ const SideMenu = (props: Props) => {
 
             <button
               type="button"
-              className="text-sm text-gray-900 underline underline-offset-4"
+              className="text-sm text-gray-900 underline underline-offset-4 disabled:opacity-50"
               onClick={handleGendersReset}
+              disabled={!gendersArray.length}
             >
               Reset
             </button>
@@ -128,8 +122,9 @@ const SideMenu = (props: Props) => {
 
             <button
               type="button"
-              className="text-sm text-gray-900 underline underline-offset-4"
+              className="text-sm text-gray-900 underline underline-offset-4 disabled:opacity-50"
               onClick={handleTagsReset}
+              disabled={!tagsArray.length}
             >
               Reset
             </button>

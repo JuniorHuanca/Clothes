@@ -8,11 +8,11 @@ export async function useFetch<T>(url: string): Promise<T> {
     },
   });
 
-  if (!res.ok) {
-    throw new Error(
-      `¡Error al procesar la solicitud! Estado: ${res.status}. Por favor, inténtalo de nuevo más tarde.`
-    );
-  }
+  // if (!res.ok) {
+  //   throw new Error(
+  //     `¡Error al procesar la solicitud! Estado: ${res.status}. Por favor, inténtalo de nuevo más tarde.`
+  //   );
+  // }
 
   return res.json();
 }
