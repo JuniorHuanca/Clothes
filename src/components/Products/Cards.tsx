@@ -8,6 +8,7 @@ type Props = {
     page?: string;
     genders?: string;
     tags?: string;
+    sort?: string;
   };
 };
 
@@ -15,13 +16,14 @@ const Cards = async ({ searchParams }: Props) => {
   const currentPage = Number(searchParams?.page) || 1;
   const genders = searchParams?.genders;
   const tags = searchParams?.tags;
+  const sort = searchParams?.sort;
   const data = await useFetch<{
     totalPages: number;
     products: IProduct[];
   }>(
     `${process.env.BASE_URL}/api/v1/products?page=${currentPage}${
       genders ? "&genders=" + genders : ""
-    }${tags ? "&tags=" + tags : ""}`
+    }${tags ? "&tags=" + tags : ""}${sort ? "&sort=" + sort : ""}`
   );
   return (
     <>

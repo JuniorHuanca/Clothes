@@ -1,5 +1,10 @@
 "use client";
-import { baseGenders, baseTags } from "@/data/general";
+import {
+  baseGenders,
+  baseTags,
+  sortByTypes,
+  sortByTypesTranslate,
+} from "@/data/general";
 import { ChevronDown } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
@@ -11,6 +16,7 @@ const SideMenu = (props: Props) => {
   const { replace } = useRouter();
   const genders = searchParams.get("genders");
   const tags = searchParams.get("tags");
+  const sort = searchParams.get("sort");
   const gendersArray = genders ? genders.split("-") : [];
   const tagsArray = tags ? tags.split("-") : [];
   const params = new URLSearchParams(searchParams);
@@ -56,8 +62,66 @@ const SideMenu = (props: Props) => {
     updateSearchParams("tags", null);
   };
 
+  const handleSort = (sort: string) => {
+    params.delete("page");
+    params.set("sort", sort);
+    replace(`${pathname}?${params.toString()}`);
+  };
+
+  const handleSortReset = () => {
+    updateSearchParams("sort", null);
+  };
+
   return (
-    <div className="sticky top-0 left-0 flex flex-col p-2 gap-2 w-64 h-screen">
+    <div className="sticky top-0 left-0 flex flex-col p-2 gap-2 w-64 h-screen overflow-y-auto">
+      <details className="rounded border border-gray-300 group">
+        <summary className="flex cursor-pointer items-center justify-between gap-2 p-4 text-gray-900 transition">
+          <span className="text-sm font-medium"> Ordenar </span>
+          <span className="transition group-open:-rotate-180">
+            <ChevronDown />
+          </span>
+        </summary>
+
+        <div className="border-t border-gray-200">
+          <header className="flex items-center justify-between p-4">
+            <span className="text-sm text-gray-700">
+              {sort ? "Activado" : "Desactivado"}
+            </span>
+
+            <button
+              type="button"
+              className="text-sm text-gray-900 underline underline-offset-4 disabled:opacity-50"
+              onClick={handleSortReset}
+              disabled={!sort}
+            >
+              Reset
+            </button>
+          </header>
+
+          <ul className="space-y-1 border-t border-gray-200 p-4">
+            {sortByTypes.map((e) => (
+              <li key={e.name}>
+                <label
+                  htmlFor={e.name}
+                  className="inline-flex items-center gap-2"
+                >
+                  <input
+                    type="radio"
+                    id={e.name}
+                    onChange={() => handleSort(e.name)}
+                    className="size-5 rounded border-gray-300 checked:bg-rose-600"
+                    checked={sort === e.name}
+                  />
+
+                  <span className="text-sm font-medium text-gray-700">
+                    {sortByTypesTranslate[e.name]}
+                  </span>
+                </label>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </details>
       <details className="rounded border border-gray-300 group" open>
         <summary className="flex cursor-pointer items-center justify-between gap-2 p-4 text-gray-900 transition">
           <span className="text-sm font-medium"> Generos </span>

@@ -8,6 +8,7 @@ type Props = {
     page?: string;
     genders?: string;
     tags?: string;
+    sort?: string;
   };
 };
 
@@ -22,7 +23,7 @@ const Products = async ({ searchParams }: Props) => {
         Todos los productos
       </h1>
       <Suspense
-        key={`${searchParams?.page}_${searchParams?.genders}_${searchParams?.tags}`}
+        key={`${searchParams?.page}_${searchParams?.genders}_${searchParams?.tags}_${searchParams?.sort}`}
         fallback={<CardsSkeleton />}
       >
         <Cards searchParams={searchParams} />

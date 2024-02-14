@@ -35,7 +35,7 @@ const Card = ({ product }: Props) => {
       </Link>
       <div className="p-4 flex flex-col">
         <Link
-          className="hover:text-blue-500 transition-all"
+          className="hover:text-rose-600 transition-all"
           href={`/product/${product.slug}`}
         >
           {product.title}
