@@ -2,7 +2,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-
+import defaultImg from "@/shared/default.jpg";
 interface Props {
   product: {
     description: string;
@@ -24,7 +24,7 @@ const Card = ({ product }: Props) => {
     <div className="rounded-md overflow-hidden w-full sm:w-64 bg-slate-100">
       <Link href={`/product/${product.slug}`}>
         <Image
-          src={`/products/${displayImage}`}
+          src={displayImage || defaultImg}
           alt={product.title}
           className="w-full object-cover rounded-md"
           width={500}
@@ -35,7 +35,7 @@ const Card = ({ product }: Props) => {
       </Link>
       <div className="p-4 flex flex-col">
         <Link
-          className="hover:text-blue-500 transition-all"
+          className="hover:text-rose-600 transition-all"
           href={`/product/${product.slug}`}
         >
           {product.title}
