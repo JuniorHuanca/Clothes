@@ -109,7 +109,7 @@ const SideMenu = (props: Props) => {
                     type="radio"
                     id={e.name}
                     onChange={() => handleSort(e.name)}
-                    className="size-5 rounded border-gray-300 checked:bg-rose-600"
+                    className="size-5 rounded border-gray-300"
                     checked={sort === e.name}
                   />
 
@@ -157,7 +157,7 @@ const SideMenu = (props: Props) => {
                     type="checkbox"
                     id={e.name}
                     onChange={() => handleGenders(e.name)}
-                    className="size-5 rounded border-gray-300 checked:bg-rose-600"
+                    className="size-5 rounded border-gray-300"
                     checked={gendersArray.includes(e.name)}
                   />
 
@@ -205,7 +205,7 @@ const SideMenu = (props: Props) => {
                     type="checkbox"
                     id={e.name}
                     onChange={() => handleTags(e.name)}
-                    className="size-5 rounded border-gray-300 checked:bg-rose-600"
+                    className="size-5 rounded border-gray-300"
                     checked={tagsArray.includes(e.name)}
                   />
 

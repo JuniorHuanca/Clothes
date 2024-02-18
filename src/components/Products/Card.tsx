@@ -34,6 +34,7 @@ const Card = ({ product }: Props) => {
         />
       </Link>
       <div className="p-4 flex flex-col">
+        <span className="bg-rose-200 text-rose-800 text-sm font-medium px-2 rounded-full w-min">{product.gender}</span>
         <Link
           className="hover:text-rose-600 transition-all"
           href={`/product/${product.slug}`}
