@@ -1,52 +1,71 @@
 "use client";
 
 import Tooltip from "@/components/Tooltip";
-import { FormDataNewProduct } from "@/shared/types";
+import {
+  FieldArray,
+  FormikErrors,
+  getIn,
+  FormikTouched,
+  Field,
+  FieldArrayRenderProps,
+} from "formik";
 import { Minus, Plus } from "lucide-react";
 import { useState } from "react";
-
+import InputField from "./InputField";
+type Product = {
+  name: string;
+  quantity: string;
+  price: string;
+  gender: string;
+  tags: string[];
+  images: File[] | null;
+};
+type FormValues = {
+  products: Product[];
+};
 type Props = {
-  formData: FormDataNewProduct;
-  onChange: (data: FormDataNewProduct) => void;
-  formKey: number;
+  product: Product;
+  index: number;
+  errors: FormikErrors<FormValues>;
+  touched: FormikTouched<FormValues>;
+  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleBlur: (
+    e: React.FocusEvent<HTMLInputElement> | React.ChangeEvent<HTMLInputElement>
+  ) => void;
+  setFieldValue: (field: string, value: keyof Product | File[]) => void;
+  arrayHelpers: FieldArrayRenderProps;
 };
 
-const Form = ({ formData, onChange, formKey }: Props) => {
+const Form = ({
+  product,
+  index,
+  errors,
+  touched,
+  handleChange,
+  handleBlur,
+  setFieldValue,
+  arrayHelpers,
+}: Props) => {
   const [showForm, setShowForm] = useState(true);
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
-    onChange({ ...formData, [name]: value });
-  };
-
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, files } = e.target;
-    if (files && files.length > 0) {
-      const imageArray: string[] = [];
-      for (let i = 0; i < files.length; i++) {
-        const imageURL = URL.createObjectURL(files[i]);
-        imageArray.push(imageURL);
-      }
-      onChange({ ...formData, [name]: imageArray });
-    }
-  };
-
-  const handleSizeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    const sizeArray = value.split(",").map((size) => size.trim());
-    onChange({ ...formData, [name]: sizeArray });
-  };
-
-  const handleTagChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    const tagArray = value.split(",").map((tag) => tag.trim());
-    onChange({ ...formData, [name]: tagArray });
-  };
   const toggleForm = () => {
     setShowForm((prevState) => !prevState);
   };
-
+  const getError = (
+    errors: FormikErrors<FormValues>,
+    index: number,
+    field: keyof FormValues["products"][number]
+  ) => {
+    const error: string = getIn(errors, `products[${index}].${field}`);
+    return error ?? "";
+  };
+  const getTouch = (
+    touched: FormikTouched<FormValues>,
+    index: number,
+    field: keyof FormValues["products"][number]
+  ) => {
+    const touch = getIn(touched, `products[${index}].${field}`);
+    return touch;
+  };
   return (
     <div>
       {!showForm && (
@@ -56,7 +75,7 @@ const Form = ({ formData, onChange, formKey }: Props) => {
             icon={
               <div className="flex items-center justify-center px-4 py-2 rounded bg-indigo-800 max-w-60">
                 <span className="line-clamp-1">
-                  {formData.title || `Producto N° ${formKey}`}
+                  {product.name || `Producto N° ${index}`}
                 </span>
                 <Plus className="flex-none" />
               </div>
@@ -67,7 +86,7 @@ const Form = ({ formData, onChange, formKey }: Props) => {
       )}
 
       {showForm && (
-        <form className="relative bg-slate-500">
+        <div className="relative">
           <button
             className="absolute top-0 right-0"
             type="button"
@@ -79,118 +98,115 @@ const Form = ({ formData, onChange, formKey }: Props) => {
               alignment="left"
             />
           </button>
-          <div>
-            <label htmlFor="title">Title:</label>
+          <InputField
+            name={`products.${index}.name`}
+            value={product.name}
+            fieldNameTranslate="Nombre"
+            error={getError(errors, index, "name")}
+            touch={getTouch(touched, index, "name")}
+            placeholder="Nombre"
+            onBlur={handleBlur}
+            onChange={handleChange}
+          />
+
+          <InputField
+            type="number"
+            name={`products.${index}.price`}
+            value={product.price}
+            fieldNameTranslate="Precio"
+            error={getError(errors, index, "price")}
+            touch={getTouch(touched, index, "price")}
+            placeholder="12.99"
+            onBlur={handleBlur}
+            onChange={handleChange}
+          />
+          <InputField
+            type="number"
+            name={`products.${index}.quantity`}
+            value={product.quantity}
+            fieldNameTranslate="Cantidad"
+            error={getError(errors, index, "quantity")}
+            touch={getTouch(touched, index, "quantity")}
+            placeholder="99"
+            onBlur={handleBlur}
+            onChange={handleChange}
+          />
+          <FieldArray name={`products.${index}.tags`}>
+            {() => (
+              <div className="flex flex-col gap-1 bg-slate-200 p-4 mt-4">
+                {["Tag1", "Tag2", "Tag3"].map((tagName, tagIndex) => (
+                  <label key={tagIndex} className="inline-flex items-center">
+                    <Field
+                      type="checkbox"
+                      name={`products.${index}.tags`}
+                      value={tagName}
+                      className="form-checkbox h-5 w-5 text-indigo-600"
+                    />
+                    <span className="ml-2 text-gray-700">{tagName}</span>
+                  </label>
+                ))}
+              </div>
+            )}
+          </FieldArray>
+          <FieldArray name={`products.${index}.gender`}>
+            {() => (
+              <div className="flex flex-col gap-1 bg-slate-300 p-4 mt-4">
+                {["gender1", "gender2", "gender3"].map(
+                  (tagName, genderIndex) => (
+                    <label
+                      key={genderIndex}
+                      className="inline-flex items-center"
+                    >
+                      <Field
+                        type="radio"
+                        name={`products.${index}.gender`}
+                        value={tagName}
+                        className="form-radio h-5 w-5 text-indigo-600"
+                      />
+                      <span className="ml-2 text-gray-700">{tagName}</span>
+                    </label>
+                  )
+                )}
+              </div>
+            )}
+          </FieldArray>
+          <div className="mt-4">
+            <label
+              htmlFor={`products.${index}.images`}
+              className="block text-sm font-medium text-gray-700"
+            >
+              Images:
+            </label>
             <input
-              type="text"
-              id="title"
-              name="title"
-              value={formData.title}
-              onChange={handleInputChange}
-              required
-            />
-          </div>
-          <div>
-            <label htmlFor="description">Description:</label>
-            <textarea
-              id="description"
-              name="description"
-              value={formData.description}
-              onChange={handleInputChange}
-              required
-            />
-          </div>
-          <div>
-            <label htmlFor="images">Images:</label>
-            <input
+              id={`products.${index}.images`}
+              name={`products.${index}.images`}
               type="file"
-              id="images"
-              name="images"
-              onChange={handleImageChange}
-              multiple
               accept="image/*"
-              required
+              multiple
+              onChange={(event) => {
+                if (event.currentTarget.files)
+                  setFieldValue(
+                    `products.${index}.images`,
+                    Array.from(event.currentTarget.files)
+                  );
+              }}
+              className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
             />
           </div>
-          <div>
-            <label htmlFor="inStock">In Stock:</label>
-            <input
-              type="number"
-              id="inStock"
-              name="inStock"
-              value={formData.inStock}
-              onChange={handleInputChange}
-              required
-            />
+          <div className="mt-4">
+            {product.images?.map((e, index) => (
+              <img
+                src={URL.createObjectURL(e)}
+                key={index}
+                alt={"preview" + index}
+                className="h-20 w-20 object-cover rounded-md mr-2"
+              />
+            ))}
           </div>
-          <div>
-            <label htmlFor="price">Price:</label>
-            <input
-              type="number"
-              id="price"
-              name="price"
-              value={formData.price}
-              onChange={handleInputChange}
-              required
-            />
-          </div>
-          <div>
-            <label htmlFor="sizes">Sizes (comma-separated):</label>
-            <input
-              type="text"
-              id="sizes"
-              name="sizes"
-              // value={formData.sizes.join(", ")}
-              onChange={handleSizeChange}
-              required
-            />
-          </div>
-          <div>
-            <label htmlFor="slug">Slug:</label>
-            <input
-              type="text"
-              id="slug"
-              name="slug"
-              value={formData.slug}
-              onChange={handleInputChange}
-              required
-            />
-          </div>
-          <div>
-            <label htmlFor="type">Type:</label>
-            <input
-              type="text"
-              id="type"
-              name="type"
-              value={formData.type}
-              onChange={handleInputChange}
-              required
-            />
-          </div>
-          <div>
-            <label htmlFor="tags">Tags (comma-separated):</label>
-            <input
-              type="text"
-              id="tags"
-              name="tags"
-              // value={formData.tags.join(", ")}
-              onChange={handleTagChange}
-              required
-            />
-          </div>
-          <div>
-            <label htmlFor="gender">Gender:</label>
-            <input
-              type="text"
-              id="gender"
-              name="gender"
-              value={formData.gender}
-              onChange={handleInputChange}
-              required
-            />
-          </div>
-          {/* <button type="submit">Submit</button> */}
-        </form>
+          <button type="button" onClick={() => arrayHelpers.remove(index)}>
+            -
+          </button>
+        </div>
       )}
     </div>
   );

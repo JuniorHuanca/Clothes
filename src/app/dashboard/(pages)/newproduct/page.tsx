@@ -1,14 +1,7 @@
 "use client";
-import {
-  Formik,
-  FieldArray,
-  FormikErrors,
-  getIn,
-  FormikTouched,
-  Field,
-} from "formik";
+import { Formik, FieldArray } from "formik";
 import * as Yup from "yup";
-import InputField from "@/components/Dashboard/NewProduct/InputField";
+import Form from "@/components/Dashboard/NewProduct/Form";
 
 const validationSchema = Yup.object().shape({
   products: Yup.array()
@@ -36,6 +29,7 @@ type Product = {
   price: string;
   gender: string;
   tags: string[];
+  images: File[] | null;
 };
 type FormValues = {
   products: Product[];
@@ -50,26 +44,12 @@ const NewProduct = (props: Props) => {
     price: "",
     gender: "",
     tags: [],
+    images: null,
   };
   const initialValues: FormValues = {
     products: [initialValue],
   };
-  const getError = (
-    errors: FormikErrors<FormValues>,
-    index: number,
-    field: keyof FormValues["products"][number]
-  ) => {
-    const error: string = getIn(errors, `products[${index}].${field}`);
-    return error ?? "";
-  };
-  const getTouch = (
-    touched: FormikTouched<FormValues>,
-    index: number,
-    field: keyof FormValues["products"][number]
-  ) => {
-    const touch = getIn(touched, `products[${index}].${field}`);
-    return touch;
-  };
+
   return (
     <Formik
       initialValues={initialValues}
@@ -85,98 +65,33 @@ const NewProduct = (props: Props) => {
         handleSubmit,
         handleChange,
         handleBlur,
+        setFieldValue,
       }) => (
         <form onSubmit={handleSubmit}>
           <FieldArray
             name="products"
             render={(arrayHelpers) => (
               <div>
-                {values.products.map((product, index) => (
-                  <div key={index}>
-                    <InputField
-                      name={`products.${index}.name`}
-                      value={product.name}
-                      fieldNameTranslate="Nombre"
-                      error={getError(errors, index, "name")}
-                      touch={getTouch(touched, index, "name")}
-                      placeholder="Nombre"
-                      onBlur={handleBlur}
-                      onChange={handleChange}
-                    />
-
-                    <InputField
-                      type="number"
-                      name={`products.${index}.price`}
-                      value={product.price}
-                      fieldNameTranslate="Precio"
-                      error={getError(errors, index, "price")}
-                      touch={getTouch(touched, index, "price")}
-                      placeholder="12.99"
-                      onBlur={handleBlur}
-                      onChange={handleChange}
-                    />
-                    <InputField
-                      type="number"
-                      name={`products.${index}.quantity`}
-                      value={product.quantity}
-                      fieldNameTranslate="Cantidad"
-                      error={getError(errors, index, "quantity")}
-                      touch={getTouch(touched, index, "quantity")}
-                      placeholder="99"
-                      onBlur={handleBlur}
-                      onChange={handleChange}
-                    />
-                    <FieldArray name={`products.${index}.tags`}>
-                      {() => (
-                        <div className="flex flex-col gap-1 bg-slate-200">
-                          {["Tag1", "Tag2", "Tag3"].map((tagName, tagIndex) => (
-                            <label key={tagIndex}>
-                              <Field
-                                type="checkbox"
-                                name={`products.${index}.tags`}
-                                value={tagName}
-                              />
-                              {tagName}
-                            </label>
-                          ))}
-                          {product.tags}
-                        </div>
-                      )}
-                    </FieldArray>
-                    <FieldArray name={`products.${index}.gender`}>
-                      {() => (
-                        <div className="flex flex-col gap-1 bg-slate-300">
-                          {["gender1", "gender2", "gender3"].map(
-                            (tagName, genderIndex) => (
-                              <label key={genderIndex}>
-                                <Field
-                                  type="radio"
-                                  name={`products.${index}.gender`}
-                                  value={tagName}
-                                />
-                                {tagName}
-                              </label>
-                            )
-                          )}
-                          {product.gender}
-                        </div>
-                      )}
-                    </FieldArray>
-
-                    <button
-                      type="button"
-                      onClick={() => arrayHelpers.remove(index)}
-                    >
-                      -
-                    </button>
-                  </div>
-                ))}
                 <button
                   type="button"
                   onClick={() => arrayHelpers.push(initialValue)}
+                  className="px-4 py-2 rounded bg-indigo-800 mb-2"
                 >
-                  +
+                  Nuevo Producto
                 </button>
+                {values.products.map((product, index) => (
+                  <Form
+                    key={index}
+                    product={product}
+                    index={index}
+                    errors={errors}
+                    touched={touched}
+                    handleChange={handleChange}
+                    handleBlur={handleBlur}
+                    setFieldValue={setFieldValue}
+                    arrayHelpers={arrayHelpers}
+                  />
+                ))}
               </div>
             )}
           />
