@@ -4,8 +4,9 @@ type Props = {
   fieldNameTranslate: string;
   placeholder: string;
   name: string;
-  value: string;
+  value: string | number;
   error?: string;
+  className?: string;
   touch?: boolean;
   type?: "text" | "number" | "email" | "password";
   onBlur: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -17,6 +18,7 @@ const InputField = ({
   error,
   touch,
   value,
+  className,
   type = "text",
   fieldNameTranslate,
   placeholder,
@@ -24,7 +26,7 @@ const InputField = ({
   onBlur,
 }: Props) => {
   return (
-    <div>
+    <div className={className}>
       <label className="capitalize block text-gray-600">
         {fieldNameTranslate}:
       </label>

@@ -1,52 +1,25 @@
 "use client";
 import { Formik, FieldArray } from "formik";
-import * as Yup from "yup";
 import Form from "@/components/Dashboard/NewProduct/Form";
-
-const validationSchema = Yup.object().shape({
-  products: Yup.array()
-    .of(
-      Yup.object().shape({
-        name: Yup.string().required("El nombre del producto es requerido"),
-        quantity: Yup.number()
-          .required("La cantidad del producto es requerida")
-          .positive("La cantidad debe ser un número positivo")
-          .integer("La cantidad debe ser un número entero")
-          .typeError("La cantidad debe ser un número"),
-        price: Yup.number()
-          .required("El precio del producto es requerido")
-          .positive("El precio debe ser un número positivo")
-          .typeError("El precio debe ser un número"),
-        tags: Yup.array().of(Yup.string()),
-      })
-    )
-    .required("Debe agregar al menos un producto"),
-});
-
-type Product = {
-  name: string;
-  quantity: string;
-  price: string;
-  gender: string;
-  tags: string[];
-  images: File[] | null;
-};
-type FormValues = {
-  products: Product[];
-};
+import { FormDataNewProduct } from "@/shared/types";
+import { validationSchema } from "@/shared/validationsForms";
 
 type Props = {};
 
 const NewProduct = (props: Props) => {
-  const initialValue: Product = {
-    name: "",
-    quantity: "",
-    price: "",
-    gender: "",
-    tags: [],
+  const initialValue: FormDataNewProduct = {
+    description: "",
     images: null,
+    inStock: 0,
+    price: 0,
+    sizes: [],
+    slug: "",
+    type: "",
+    tags: [],
+    title: "",
+    gender: "",
   };
-  const initialValues: FormValues = {
+  const initialValues = {
     products: [initialValue],
   };
 
@@ -67,35 +40,42 @@ const NewProduct = (props: Props) => {
         handleBlur,
         setFieldValue,
       }) => (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="p-4">
           <FieldArray
             name="products"
             render={(arrayHelpers) => (
-              <div>
+              <>
                 <button
                   type="button"
                   onClick={() => arrayHelpers.push(initialValue)}
-                  className="px-4 py-2 rounded bg-indigo-800 mb-2"
+                  className="px-4 py-2 rounded bg-indigo-800 mb-2 w-max"
                 >
                   Nuevo Producto
                 </button>
-                {values.products.map((product, index) => (
-                  <Form
-                    key={index}
-                    product={product}
-                    index={index}
-                    errors={errors}
-                    touched={touched}
-                    handleChange={handleChange}
-                    handleBlur={handleBlur}
-                    setFieldValue={setFieldValue}
-                    arrayHelpers={arrayHelpers}
-                  />
-                ))}
-              </div>
+                <div className="flex flex-col gap-1">
+                  {values.products.map((product, index) => (
+                    <Form
+                      key={index}
+                      product={product}
+                      index={index}
+                      errors={errors}
+                      touched={touched}
+                      handleChange={handleChange}
+                      handleBlur={handleBlur}
+                      setFieldValue={setFieldValue}
+                      arrayHelpers={arrayHelpers}
+                    />
+                  ))}
+                </div>
+              </>
             )}
           />
-          <button type="submit">Submit</button>
+          <button
+            className="mt-4 text-white px-4 py-2 rounded bg-green-500 mb-2 w-max"
+            type="submit"
+          >
+            Submit
+          </button>
         </form>
       )}
     </Formik>

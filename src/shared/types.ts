@@ -41,7 +41,7 @@ export interface FormValues {
 
 export interface FormDataNewProduct {
   description: string;
-  images: string[];
+  images: File[] | null;
   inStock: number;
   price: number;
   sizes: string[];
