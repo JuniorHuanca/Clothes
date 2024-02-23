@@ -15,6 +15,7 @@ import Tags from "./Tags";
 import { FormDataNewProduct } from "@/shared/types";
 import Types from "./Types";
 import Sizes from "./Sizes";
+import Confirmation from "@/components/Modals/Confirmation";
 
 type FormValues = {
   products: FormDataNewProduct[];
@@ -47,6 +48,7 @@ const Form = ({
   arrayHelpers,
 }: Props) => {
   const [showForm, setShowForm] = useState(true);
+  const [deleteConfirmation, setDeleteConfirmation] = useState(false);
   const toggleForm = () => {
     setShowForm((prevState) => !prevState);
   };
@@ -69,7 +71,7 @@ const Form = ({
   return (
     <div>
       {!showForm && (
-        <div className="w-max flex bg-indigo-800 rounded p-2 text-white">
+        <div className="w-max flex gap-2 bg-indigo-800 rounded p-2 text-white">
           <button type="button" onClick={toggleForm}>
             <Tooltip
               text="Mostrar formulario"
@@ -78,13 +80,16 @@ const Form = ({
                   <span className="line-clamp-1">
                     {product.title || `Producto N° ${index}`}
                   </span>
-                  <Plus className="flex-none" />
                 </div>
               }
               alignment="top"
             />
           </button>
-          <button type="button" onClick={() => arrayHelpers.remove(index)} className="text-red-500">
+          <button
+            type="button"
+            onClick={() => setDeleteConfirmation(true)}
+            className="text-red-500"
+          >
             <Tooltip
               text="Eliminar formulario"
               icon={<Trash2 className="flex-none" />}
@@ -95,7 +100,7 @@ const Form = ({
       )}
 
       {showForm && (
-        <div className="relative w-full sm:p-4 grid gap-3 justify-center [grid-template-areas:'title_selectors_selector''description_description_priceandstock''images_images_images'] [grid-template-columns:1fr_repeat(2,300px)]">
+        <div className="relative w-full lg:p-4 lg:grid gap-3 justify-center [grid-template-areas:'title_selectors_selector''description_description_priceandstock''images_images_images'] [grid-template-columns:1fr_repeat(2,300px)]">
           <button
             className="absolute -top-2 right-0"
             type="button"
@@ -163,12 +168,12 @@ const Form = ({
             />
           </div>
           <div className="[grid-area:images]">
-            <div className="mt-4">
+            <div className="grid place-content-center">
               <label
                 htmlFor={`products.${index}.images`}
-                className="block text-sm font-medium text-gray-700"
+                className="border-2 p-2 rounded-xl border-indigo-800 text-white bg-indigo-800/70 mt-4 hover:cursor-pointer"
               >
-                Images:
+                📁 Subir foto
               </label>
               <input
                 id={`products.${index}.images`}
@@ -183,7 +188,7 @@ const Form = ({
                       Array.from(event.currentTarget.files)
                     );
                 }}
-                className=""
+                className="hidden"
               />
             </div>
             <div className="flex flex-wrap justify-center">
@@ -198,6 +203,16 @@ const Form = ({
             </div>
           </div>
         </div>
+      )}
+      {deleteConfirmation && (
+        <Confirmation
+          title="Eliminar formulario"
+          message="¿Estás seguro de que deseas eliminar este formulario? Ten en cuenta que esta acción eliminará todos los datos asociados al formulario y no se podrán recuperar."
+          confirmText="Sí, eliminar"
+          cancelText="Cancelar"
+          onConfirm={() => arrayHelpers.remove(index)}
+          onCancel={() => setDeleteConfirmation(false)}
+        />
       )}
     </div>
   );

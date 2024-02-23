@@ -48,9 +48,9 @@ const NewProduct = (props: Props) => {
                 <button
                   type="button"
                   onClick={() => arrayHelpers.push(initialValue)}
-                  className="px-4 py-2 rounded bg-indigo-800 mb-2 w-max"
+                  className="px-4 py-2 rounded bg-indigo-800 mb-2 w-max text-white"
                 >
-                  Nuevo Producto
+                  👚 Nuevo Producto
                 </button>
                 <div className="flex flex-col gap-1">
                   {values.products.map((product, index) => (
