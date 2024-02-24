@@ -2,7 +2,7 @@ export async function useFetch<T>(url: string): Promise<T> {
   // emulate delay
   // await new Promise((resolve) => setTimeout(resolve, 3000));
 
-  const res = await fetch(url, {
+  const res = await fetch(`${process.env.BASE_URL}${url}`, {
     next: {
       revalidate: 0, // use 0 to opt out of using cache
     },

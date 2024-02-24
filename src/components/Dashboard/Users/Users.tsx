@@ -5,9 +5,7 @@ import User from "./User";
 type Props = {};
 
 const Users = async (props: Props) => {
-  const data = await useFetch<IUser[]>(
-    `${process.env.BASE_URL}/api/v1/dashboard/users`
-  );
+  const data = await useFetch<IUser[]>(`/api/v1/dashboard/users`);
 
   return (
     <div className="flex flex-wrap justify-center gap-2 p-2">

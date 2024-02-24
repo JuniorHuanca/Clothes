@@ -21,7 +21,7 @@ const Cards = async ({ searchParams }: Props) => {
     totalPages: number;
     products: IProduct[];
   }>(
-    `${process.env.BASE_URL}/api/v1/products?page=${currentPage}${
+    `/api/v1/products?page=${currentPage}${
       genders ? "&genders=" + genders : ""
     }${tags ? "&tags=" + tags : ""}${sort ? "&sort=" + sort : ""}`
   );

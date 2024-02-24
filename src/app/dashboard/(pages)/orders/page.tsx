@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 const DashboardOrders = async (props: Props) => {
   const session = await getServerSession(authOptions);
   const data = await useFetch<IOrder[]>(
-    `${process.env.BASE_URL}/api/v1/dashboard/orders?userId=${session?.user.id}`
+    `/api/v1/dashboard/orders?userId=${session?.user.id}`
   );
   return <Orders data={data} />;
 };

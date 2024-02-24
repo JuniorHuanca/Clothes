@@ -1,10 +1,41 @@
+import BackButton from "@/components/BackButton";
+import Carrosel from "@/components/Carrosel";
+import { useFetch } from "@/hooks/useFetch";
+import { IProduct } from "@/shared/types";
+import { formatPrice } from "@/shared/utils";
+import { notFound } from "next/navigation";
 
-type Props = {}
+type Props = {
+  params: { slug: string };
+};
 
-const Detail = (props: Props) => {
+const Detail = async ({ params }: Props) => {
+  const product = await useFetch<IProduct>(`/api/v1/products/${params.slug}`);
+  if (typeof product !== "object") {
+    notFound();
+  }
+
   return (
-    <div>Detail</div>
-  )
-}
+    <div className="flex flex-col items-center">
+      <BackButton />
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 max-w-[1400px] flex-1">
+        <div className="col-span-1 lg:col-span-2">
+          <Carrosel slides={product.images} />
+        </div>
 
-export default Detail
+        {/* Detalles */}
+        <div className="col-span-1 lg:col-span-2 p-2 md:p-4">
+          <h1 className={`text-xl md:text-2xl antialiased font-bold`}>
+            {product.title}
+          </h1>
+          <p className="text-lg mb-5">{formatPrice(product.price)}</p>
+          {/* <AddToCart product={ product } /> */}
+          <h3 className="font-bold text-sm">Descripción</h3>
+          <p>{product.description}</p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Detail;
