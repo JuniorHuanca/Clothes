@@ -53,7 +53,7 @@ const Navbar = (props: Props) => {
               <div className="sm:flex sm:gap-4">
                 <button
                   type="button"
-                  className="rounded-md bg-teal-600 px-5 py-2.5 text-sm font-medium text-white shadow"
+                  className="rounded-md bg-rose-600 px-5 py-2.5 text-sm font-medium text-white shadow"
                   onClick={() => signIn()}
                 >
                   Iniciar sesión
@@ -61,7 +61,7 @@ const Navbar = (props: Props) => {
 
                 <div className="hidden sm:flex">
                   <Link
-                    className="rounded-md bg-gray-100 px-5 py-2.5 text-sm font-medium text-teal-600"
+                    className="rounded-md bg-rose-100 px-5 py-2.5 text-sm font-medium text-rose-600"
                     href="/auth/register"
                   >
                     Registrarse

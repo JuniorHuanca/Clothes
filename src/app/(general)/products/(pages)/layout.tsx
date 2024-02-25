@@ -10,7 +10,7 @@ const layout = ({ children }: Props) => {
     <div className="min-h-screen sm:p-3">
       <div className="flex">
         <SideMenu />
-        <div className="flex-1">
+        <div className="flex-1 p-2">
           <Breadcrumb />
           {children}
         </div>

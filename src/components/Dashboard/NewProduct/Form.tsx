@@ -1,75 +1,108 @@
 "use client";
 
 import Tooltip from "@/components/Tooltip";
-import { FormDataNewProduct } from "@/shared/types";
-import { Minus, Plus } from "lucide-react";
+import {
+  FormikErrors,
+  getIn,
+  FormikTouched,
+  FieldArrayRenderProps,
+} from "formik";
+import { Minus, Plus, Trash2 } from "lucide-react";
 import { useState } from "react";
+import InputField from "./InputField";
+import Genders from "./Genders";
+import Tags from "./Tags";
+import { FormDataNewProduct } from "@/shared/types";
+import Types from "./Types";
+import Sizes from "./Sizes";
+import Confirmation from "@/components/Modals/Confirmation";
 
-type Props = {
-  formData: FormDataNewProduct;
-  onChange: (data: FormDataNewProduct) => void;
-  formKey: number;
+type FormValues = {
+  products: FormDataNewProduct[];
 };
 
-const Form = ({ formData, onChange, formKey }: Props) => {
+type Props = {
+  product: FormDataNewProduct;
+  index: number;
+  errors: FormikErrors<FormValues>;
+  touched: FormikTouched<FormValues>;
+  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleBlur: (
+    e: React.FocusEvent<HTMLInputElement> | React.ChangeEvent<HTMLInputElement>
+  ) => void;
+  setFieldValue: (
+    field: string,
+    value: keyof FormDataNewProduct | File[]
+  ) => void;
+  arrayHelpers: FieldArrayRenderProps;
+};
+
+const Form = ({
+  product,
+  index,
+  errors,
+  touched,
+  handleChange,
+  handleBlur,
+  setFieldValue,
+  arrayHelpers,
+}: Props) => {
   const [showForm, setShowForm] = useState(true);
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
-    onChange({ ...formData, [name]: value });
-  };
-
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, files } = e.target;
-    if (files && files.length > 0) {
-      const imageArray: string[] = [];
-      for (let i = 0; i < files.length; i++) {
-        const imageURL = URL.createObjectURL(files[i]);
-        imageArray.push(imageURL);
-      }
-      onChange({ ...formData, [name]: imageArray });
-    }
-  };
-
-  const handleSizeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    const sizeArray = value.split(",").map((size) => size.trim());
-    onChange({ ...formData, [name]: sizeArray });
-  };
-
-  const handleTagChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    const tagArray = value.split(",").map((tag) => tag.trim());
-    onChange({ ...formData, [name]: tagArray });
-  };
+  const [deleteConfirmation, setDeleteConfirmation] = useState(false);
   const toggleForm = () => {
     setShowForm((prevState) => !prevState);
   };
-
+  const getError = (
+    errors: FormikErrors<FormValues>,
+    index: number,
+    field: keyof FormValues["products"][number]
+  ) => {
+    const error: string = getIn(errors, `products[${index}].${field}`);
+    return error ?? "";
+  };
+  const getTouch = (
+    touched: FormikTouched<FormValues>,
+    index: number,
+    field: keyof FormValues["products"][number]
+  ) => {
+    const touch = getIn(touched, `products[${index}].${field}`);
+    return touch;
+  };
   return (
     <div>
       {!showForm && (
-        <button type="button" onClick={toggleForm}>
-          <Tooltip
-            text="Mostrar formulario"
-            icon={
-              <div className="flex items-center justify-center px-4 py-2 rounded bg-indigo-800 max-w-60">
-                <span className="line-clamp-1">
-                  {formData.title || `Producto N° ${formKey}`}
-                </span>
-                <Plus className="flex-none" />
-              </div>
-            }
-            alignment="top"
-          />
-        </button>
+        <div className="w-max flex gap-2 bg-indigo-800 rounded p-2 text-white">
+          <button type="button" onClick={toggleForm}>
+            <Tooltip
+              text="Mostrar formulario"
+              icon={
+                <div className="flex items-center justify-center max-w-60">
+                  <span className="line-clamp-1">
+                    {product.title || `Producto N° ${index}`}
+                  </span>
+                </div>
+              }
+              alignment="top"
+            />
+          </button>
+          <button
+            type="button"
+            onClick={() => setDeleteConfirmation(true)}
+            className="text-red-500"
+          >
+            <Tooltip
+              text="Eliminar formulario"
+              icon={<Trash2 className="flex-none" />}
+              alignment="top"
+            />
+          </button>
+        </div>
       )}
 
       {showForm && (
-        <form className="relative bg-slate-500">
+        <div className="relative w-full lg:p-4 lg:grid gap-3 justify-center [grid-template-areas:'title_selectors_selector''description_description_priceandstock''images_images_images'] [grid-template-columns:1fr_repeat(2,300px)]">
           <button
-            className="absolute top-0 right-0"
+            className="absolute -top-2 right-0"
             type="button"
             onClick={toggleForm}
           >
@@ -79,290 +112,110 @@ const Form = ({ formData, onChange, formKey }: Props) => {
               alignment="left"
             />
           </button>
-          <div>
-            <label htmlFor="title">Title:</label>
-            <input
-              type="text"
-              id="title"
-              name="title"
-              value={formData.title}
-              onChange={handleInputChange}
-              required
-            />
+
+          <InputField
+            className="[grid-area:title]"
+            name={`products.${index}.title`}
+            value={product.title}
+            fieldNameTranslate="Nombre"
+            error={getError(errors, index, "title")}
+            touch={getTouch(touched, index, "title")}
+            placeholder="Nombre"
+            onBlur={handleBlur}
+            onChange={handleChange}
+          />
+          <div className="[grid-area:selectors] grid grid-cols-2 gap-2">
+            <Tags index={index} />
+            <Sizes index={index} />
           </div>
-          <div>
-            <label htmlFor="description">Description:</label>
-            <textarea
-              id="description"
-              name="description"
-              value={formData.description}
-              onChange={handleInputChange}
-              required
-            />
+          <div className="[grid-area:selector] grid grid-cols-2 gap-2">
+            <Genders index={index} />
+            <Types index={index} />
           </div>
-          <div>
-            <label htmlFor="images">Images:</label>
-            <input
-              type="file"
-              id="images"
-              name="images"
-              onChange={handleImageChange}
-              multiple
-              accept="image/*"
-              required
-            />
-          </div>
-          <div>
-            <label htmlFor="inStock">In Stock:</label>
-            <input
+          <InputField
+            className="[grid-area:description]"
+            name={`products.${index}.description`}
+            value={product.description}
+            fieldNameTranslate="Descripcion"
+            error={getError(errors, index, "description")}
+            touch={getTouch(touched, index, "description")}
+            placeholder="Descripcion"
+            onBlur={handleBlur}
+            onChange={handleChange}
+          />
+          <div className="[grid-area:priceandstock] grid grid-cols-2 gap-2">
+            <InputField
               type="number"
-              id="inStock"
-              name="inStock"
-              value={formData.inStock}
-              onChange={handleInputChange}
-              required
+              name={`products.${index}.price`}
+              value={product.price}
+              fieldNameTranslate="Precio"
+              error={getError(errors, index, "price")}
+              touch={getTouch(touched, index, "price")}
+              placeholder="12.99"
+              onBlur={handleBlur}
+              onChange={handleChange}
             />
-          </div>
-          <div>
-            <label htmlFor="price">Price:</label>
-            <input
+            <InputField
               type="number"
-              id="price"
-              name="price"
-              value={formData.price}
-              onChange={handleInputChange}
-              required
+              name={`products.${index}.inStock`}
+              value={product.inStock}
+              fieldNameTranslate="Cantidad"
+              error={getError(errors, index, "inStock")}
+              touch={getTouch(touched, index, "inStock")}
+              placeholder="99"
+              onBlur={handleBlur}
+              onChange={handleChange}
             />
           </div>
-          <div>
-            <label htmlFor="sizes">Sizes (comma-separated):</label>
-            <input
-              type="text"
-              id="sizes"
-              name="sizes"
-              // value={formData.sizes.join(", ")}
-              onChange={handleSizeChange}
-              required
-            />
+          <div className="[grid-area:images]">
+            <div className="grid place-content-center">
+              <label
+                htmlFor={`products.${index}.images`}
+                className="border-2 p-2 rounded-xl border-indigo-800 text-white bg-indigo-800/70 mt-4 hover:cursor-pointer"
+              >
+                📁 Subir foto
+              </label>
+              <input
+                id={`products.${index}.images`}
+                name={`products.${index}.images`}
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={(event) => {
+                  if (event.currentTarget.files)
+                    setFieldValue(
+                      `products.${index}.images`,
+                      Array.from(event.currentTarget.files)
+                    );
+                }}
+                className="hidden"
+              />
+            </div>
+            <div className="flex flex-wrap justify-center">
+              {product.images?.map((e, index) => (
+                <img
+                  key={index}
+                  src={URL.createObjectURL(e)}
+                  alt={"preview" + index}
+                  className="w-72 h-72 object-scale-down rounded-md mr-2"
+                />
+              ))}
+            </div>
           </div>
-          <div>
-            <label htmlFor="slug">Slug:</label>
-            <input
-              type="text"
-              id="slug"
-              name="slug"
-              value={formData.slug}
-              onChange={handleInputChange}
-              required
-            />
-          </div>
-          <div>
-            <label htmlFor="type">Type:</label>
-            <input
-              type="text"
-              id="type"
-              name="type"
-              value={formData.type}
-              onChange={handleInputChange}
-              required
-            />
-          </div>
-          <div>
-            <label htmlFor="tags">Tags (comma-separated):</label>
-            <input
-              type="text"
-              id="tags"
-              name="tags"
-              // value={formData.tags.join(", ")}
-              onChange={handleTagChange}
-              required
-            />
-          </div>
-          <div>
-            <label htmlFor="gender">Gender:</label>
-            <input
-              type="text"
-              id="gender"
-              name="gender"
-              value={formData.gender}
-              onChange={handleInputChange}
-              required
-            />
-          </div>
-          {/* <button type="submit">Submit</button> */}
-        </form>
+        </div>
+      )}
+      {deleteConfirmation && (
+        <Confirmation
+          title="Eliminar formulario"
+          message="¿Estás seguro de que deseas eliminar este formulario? Ten en cuenta que esta acción eliminará todos los datos asociados al formulario y no se podrán recuperar."
+          confirmText="Sí, eliminar"
+          cancelText="Cancelar"
+          onConfirm={() => arrayHelpers.remove(index)}
+          onCancel={() => setDeleteConfirmation(false)}
+        />
       )}
     </div>
   );
 };
 
 export default Form;
-
-// "use client";
-
-// import Input from "@/components/Custom/Input";
-// import { FormDataNewProduct } from "@/shared/types";
-// import { useFormik } from "formik";
-// import { Minus, Plus } from "lucide-react";
-// import { useState } from "react";
-// import * as Yup from "yup";
-
-// type Props = {
-//   formData: FormDataNewProduct;
-//   onChange: (data: FormDataNewProduct) => void;
-//   formKey: number;
-// };
-
-// const Form = ({ formData, onChange, formKey }: Props) => {
-//   const [showForm, setShowForm] = useState(true);
-//   const validationSchema = Yup.object().shape({
-//     description: Yup.string().required("La descripción es requerida"),
-//     images: Yup.array().min(1, "Debe seleccionar al menos una imagen"),
-//     inStock: Yup.number()
-//       .required("La cantidad en stock es requerida")
-//       .min(0, "La cantidad en stock debe ser mayor o igual a cero"),
-//     price: Yup.number()
-//       .required("El precio es requerido")
-//       .min(0, "El precio debe ser mayor o igual a cero"),
-//     sizes: Yup.array().min(1, "Debe seleccionar al menos un tamaño"),
-//     slug: Yup.string().required("El slug es requerido"),
-//     type: Yup.string().required("El tipo es requerido"),
-//     tags: Yup.array().min(1, "Debe seleccionar al menos una etiqueta"),
-//     title: Yup.string().required("El título es requerido"),
-//     gender: Yup.string().required("El género es requerido"),
-//   });
-//   const formik = useFormik({
-//     initialValues: formData,
-//     validationSchema,
-//     onSubmit,
-//   });
-//   async function onSubmit(
-//     values: FormDataNewProduct,
-//     { resetForm }: { resetForm: () => void }
-//   ) {
-//     console.log(values);
-//     resetForm();
-//   }
-//   const handleInputChange = (
-//     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-//   ) => {
-//     const { name, value } = e.target;
-//     formik.handleChange(e);
-//     onChange({ ...formData, [name]: value });
-//   };
-
-//   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-//     const { name, files } = e.target;
-//     if (files && files.length > 0) {
-//       const imageArray: string[] = [];
-//       for (let i = 0; i < files.length; i++) {
-//         const imageURL = URL.createObjectURL(files[i]);
-//         imageArray.push(imageURL);
-//       }
-//       onChange({ ...formData, [name]: imageArray });
-//     }
-//   };
-
-//   const handleSizeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-//     const { name, value } = e.target;
-//     const sizeArray = value.split(",").map((size) => size.trim());
-//     onChange({ ...formData, [name]: sizeArray });
-//   };
-
-//   const handleTagChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-//     const { name, value } = e.target;
-//     const tagArray = value.split(",").map((tag) => tag.trim());
-//     onChange({ ...formData, [name]: tagArray });
-//   };
-//   const toggleForm = () => {
-//     setShowForm((prevState) => !prevState);
-//   };
-
-//   return (
-//     <div className="p-2">
-//       <button
-//         type="button"
-//         onClick={toggleForm}
-//         className="flex items-center justify-center px-4 py-2 rounded bg-indigo-800 max-w-60"
-//       >
-//         {showForm ? (
-//           <Minus className="flex-none" />
-//         ) : (
-//           <Plus className="flex-none" />
-//         )}
-//         <span className="line-clamp-1">
-//           {formData.title || `Producto N° ${formKey}`}
-//         </span>
-//       </button>
-
-//       {showForm && (
-//         <form className="">
-//           <Input
-//             formik={formik}
-//             fieldName="title"
-//             fieldNameTranslate="Titulo"
-//           />
-//           {/* <Input formik={formik} fieldName="description" fieldNameTranslate="description" /> */}
-//           <Input
-//             formik={formik}
-//             fieldName="inStock"
-//             fieldNameTranslate="Stock"
-//           />
-//           <Input formik={formik} fieldName="price" fieldNameTranslate="price" />
-//           <Input formik={formik} fieldName="type" fieldNameTranslate="type" />
-//           <Input
-//             formik={formik}
-//             fieldName="gender"
-//             fieldNameTranslate="gender"
-//           />
-//           <div>
-//             <label htmlFor="description">Description:</label>
-//             <textarea
-//               id="description"
-//               name="description"
-//               value={formData.description}
-//               onChange={handleInputChange}
-//               required
-//             />
-//           </div>
-//           <div>
-//             <label htmlFor="images">Images:</label>
-//             <input
-//               type="file"
-//               id="images"
-//               name="images"
-//               onChange={handleImageChange}
-//               multiple
-//               accept="image/*"
-//               required
-//             />
-//           </div>
-//           <div>
-//             <label htmlFor="sizes">Sizes (comma-separated):</label>
-//             <input
-//               type="text"
-//               id="sizes"
-//               name="sizes"
-//               // value={formData.sizes.join(", ")}
-//               onChange={handleSizeChange}
-//               required
-//             />
-//           </div>
-//           <div>
-//             <label htmlFor="tags">Tags (comma-separated):</label>
-//             <input
-//               type="text"
-//               id="tags"
-//               name="tags"
-//               // value={formData.tags.join(", ")}
-//               onChange={handleTagChange}
-//               required
-//             />
-//           </div>
-//         </form>
-//       )}
-//     </div>
-//   );
-// };
-
-// export default Form;

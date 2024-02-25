@@ -43,6 +43,27 @@ export const baseTypes = [
   },
 ];
 
+export const baseSizes = [
+  {
+    name: "XS",
+  },
+  {
+    name: "S",
+  },
+  {
+    name: "M",
+  },
+  {
+    name: "L",
+  },
+  {
+    name: "XL",
+  },
+  {
+    name: "XXL",
+  },
+];
+
 export const sortByTypes = [
   {
     name: "ascPrice",
