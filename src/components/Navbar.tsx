@@ -4,10 +4,12 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import Tooltip from "./Tooltip";
+import { useState } from "react";
 
 type Props = {};
 
 const Navbar = (props: Props) => {
+  const [isOpen, setIsOpen] = useState(false);
   const { data: session } = useSession();
   const links = [
     { name: "Inicio", route: "/" },
@@ -48,8 +50,8 @@ const Navbar = (props: Props) => {
             </ul>
           </div>
 
-          {!session && (
-            <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4">
+            {!session && (
               <div className="sm:flex sm:gap-4">
                 <button
                   type="button"
@@ -68,32 +70,47 @@ const Navbar = (props: Props) => {
                   </Link>
                 </div>
               </div>
-
-              <div className="block md:hidden">
-                <button
-                  type="button"
-                  className="rounded bg-gray-100 p-2 text-gray-600 transition hover:text-gray-600/75"
-                >
-                  <Menu />
-                </button>
+            )}
+            {session && (
+              <div>
+                {!session.user.image && <CircleUser size={40} />}
+                {session.user.image && (
+                  <Image
+                    src={session.user.image}
+                    height={40}
+                    width={40}
+                    alt={session.user.name}
+                    className="rounded-full"
+                  />
+                )}
               </div>
+            )}
+            <div className="block md:hidden">
+              <button
+                type="button"
+                onClick={() => setIsOpen(!isOpen)}
+                className="rounded bg-gray-100 p-2 text-gray-600 transition hover:text-gray-600/75"
+              >
+                <Menu />
+              </button>
             </div>
-          )}
-          {session && (
-            <div>
-              {!session.user.image && <CircleUser size={40} />}
-              {session.user.image && (
-                <Image
-                  src={session.user.image}
-                  height={40}
-                  width={40}
-                  alt={session.user.name}
-                  className="rounded-full"
-                />
-              )}
-            </div>
-          )}
+          </div>
         </div>
+      </div>
+      <div className={`md:hidden ${isOpen ? "block" : "hidden"}`}>
+        <ul className="flex flex-col p-4 gap-4 text-sm">
+          {links.map((e) => (
+            <li key={e.name}>
+              <Link
+                title={`Ir a ${e.name}`}
+                className="relative w-fit block after:block after:content-[''] after:absolute after:h-[2px] after:bg-rose-600 after:w-full after:scale-x-0 after:hover:scale-x-100 after:transition after:duration-300 after:origin-left hover:text-rose-600 text-base text-gray-700"
+                href={e.route}
+              >
+                {e.name}
+              </Link>
+            </li>
+          ))}
+        </ul>
       </div>
     </header>
   );
