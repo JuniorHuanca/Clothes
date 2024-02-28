@@ -1,5 +1,5 @@
 "use client";
-import { CircleUser, LogOut, Menu, Shirt } from "lucide-react";
+import { CircleUser, LogOut, Menu, Search, Shirt } from "lucide-react";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
@@ -10,6 +10,7 @@ type Props = {};
 
 const Navbar = (props: Props) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isSearch, setIsSearch] = useState(true);
   const { data: session } = useSession();
   const links = [
     { name: "Inicio", route: "/" },
@@ -51,6 +52,13 @@ const Navbar = (props: Props) => {
           </div>
 
           <div className="flex items-center gap-4">
+            <button
+              type="button"
+              onClick={() => setIsSearch(!isSearch)}
+              className=""
+            >
+              <Search size={40} />
+            </button>
             {!session && (
               <div className="sm:flex sm:gap-4">
                 <button
@@ -72,18 +80,37 @@ const Navbar = (props: Props) => {
               </div>
             )}
             {session && (
-              <div>
-                {!session.user.image && <CircleUser size={40} />}
-                {session.user.image && (
-                  <Image
-                    src={session.user.image}
-                    height={40}
-                    width={40}
-                    alt={session.user.name}
-                    className="rounded-full"
-                  />
-                )}
-              </div>
+              <details className="relative flex flex-col">
+                <summary className="block cursor-pointer">
+                  {!session.user.image && <CircleUser size={40} />}
+                  {session.user.image && (
+                    <Image
+                      src={session.user.image}
+                      height={40}
+                      width={40}
+                      alt={session.user.name}
+                      className="rounded-full"
+                    />
+                  )}
+                </summary>
+                <div className="absolute flex flex-col gap-2 top-10 z-10 right-0 bg-white p-2 border-2 rounded-md w-72">
+                  {session.user.role.routes.includes("/dashboard") && (
+                    <Link
+                      href="/dashboard"
+                      className="rounded-md bg-indigo-100 px-5 py-2.5 text-sm text-center font-medium text-indigo-800"
+                    >
+                      Dashboard
+                    </Link>
+                  )}
+                  <button
+                    type="button"
+                    className="rounded-md bg-rose-100 px-5 py-2.5 text-sm font-medium text-rose-600"
+                    onClick={() => signOut()}
+                  >
+                    Cerrar sesión
+                  </button>
+                </div>
+              </details>
             )}
             <div className="block md:hidden">
               <button
@@ -97,6 +124,21 @@ const Navbar = (props: Props) => {
           </div>
         </div>
       </div>
+      <div
+        className={`${
+          isSearch ? "flex" : "hidden"
+        } gap-1 justify-center p-2 w-full`}
+      >
+        <input
+          type="text"
+          placeholder="Search for..."
+          className="w-full sm:w-auto border p-2"
+        />
+        <button type="button" className="border p-2">
+          Buscar
+        </button>
+      </div>
+
       <div className={`md:hidden ${isOpen ? "block" : "hidden"}`}>
         <ul className="flex flex-col p-4 gap-4 text-sm">
           {links.map((e) => (

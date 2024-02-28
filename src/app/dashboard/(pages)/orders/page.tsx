@@ -1,10 +1,9 @@
 import Orders from "@/components/Dashboard/Orders/Orders";
 import { useFetch } from "@/hooks/useFetch";
 import { authOptions } from "@/shared/authOptions";
-import { IOrder, IUser } from "@/shared/types";
+import { IOrder } from "@/shared/types";
 import { Metadata } from "next";
 import { getServerSession } from "next-auth";
-import { Suspense } from "react";
 
 type Props = {};
 
@@ -17,7 +16,11 @@ const DashboardOrders = async (props: Props) => {
   const data = await useFetch<IOrder[]>(
     `/api/v1/dashboard/orders?userId=${session?.user.id}`
   );
-  return <Orders data={data} />;
+  return typeof data === "object" ? (
+    <Orders data={data} />
+  ) : (
+    <h2>Usted no tiene ordenes asignadas aun </h2>
+  );
 };
 
 export default DashboardOrders;
