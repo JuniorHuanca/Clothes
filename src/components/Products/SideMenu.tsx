@@ -137,7 +137,7 @@ const SideMenu = (props: Props) => {
         </details>
         <details className="rounded border border-gray-300 group" open>
           <summary className="flex cursor-pointer items-center justify-between gap-2 p-4 text-gray-900 transition">
-            <span className="text-sm font-medium"> Generos </span>
+            <span className="text-sm font-medium"> Géneros </span>
             <span className="transition group-open:-rotate-180">
               <ChevronDown />
             </span>

@@ -5,12 +5,13 @@ import Image from "next/image";
 import Link from "next/link";
 import Tooltip from "./Tooltip";
 import { useState } from "react";
+import SearchBar from "./SearchBar";
 
 type Props = {};
 
 const Navbar = (props: Props) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [isSearch, setIsSearch] = useState(true);
+  const [isSearch, setIsSearch] = useState(false);
   const { data: session } = useSession();
   const links = [
     { name: "Inicio", route: "/" },
@@ -124,21 +125,7 @@ const Navbar = (props: Props) => {
           </div>
         </div>
       </div>
-      <div
-        className={`${
-          isSearch ? "flex" : "hidden"
-        } gap-1 justify-center p-2 w-full`}
-      >
-        <input
-          type="text"
-          placeholder="Search for..."
-          className="w-full sm:w-auto border p-2"
-        />
-        <button type="button" className="border p-2">
-          Buscar
-        </button>
-      </div>
-
+      <SearchBar isSearch={isSearch} />
       <div className={`md:hidden ${isOpen ? "block" : "hidden"}`}>
         <ul className="flex flex-col p-4 gap-4 text-sm">
           {links.map((e) => (
