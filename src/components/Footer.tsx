@@ -25,8 +25,8 @@ const Footer = (props: Props) => {
         </div>
 
         <p className="mx-auto mt-6 max-w-md text-center leading-relaxed text-gray-500">
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Incidunt
-          consequuntur amet culpa cum itaque neque.
+          Explora nuestra selección de prendas de alta calidad y encuentra lo
+          último en tendencias de moda para esta temporada.
         </p>
 
         <ul className="mt-12 flex flex-wrap justify-center gap-6 md:gap-8 lg:gap-12">
