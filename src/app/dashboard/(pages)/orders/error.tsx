@@ -16,10 +16,7 @@ export default function Error({
 
   return (
     <div>
-      {!error.message.includes("404") && <h2>Something went wrong!</h2>}
-      {error.message.includes("404") && (
-        <h2>Usted no tiene ordenes asignadas aun </h2>
-      )}
+      <h2>Something went wrong!</h2>
       <button onClick={() => reset()}>Refrescar</button>
     </div>
   );

@@ -3,19 +3,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import defaultImg from "@/shared/default.jpg";
+import { IProduct } from "@/shared/types";
 interface Props {
-  product: {
-    description: string;
-    images: string[];
-    inStock: number;
-    price: number;
-    sizes: string[];
-    slug: string;
-    type: string;
-    tags: string[];
-    title: string;
-    gender: string;
-  };
+  product: IProduct;
 }
 
 const Card = ({ product }: Props) => {
@@ -34,7 +24,9 @@ const Card = ({ product }: Props) => {
         />
       </Link>
       <div className="p-4 flex flex-col">
-        <span className="bg-rose-200 text-rose-800 text-sm font-medium px-2 rounded-full w-min">{product.gender}</span>
+        <span className="bg-rose-200 text-rose-800 text-sm font-medium px-2 rounded-full w-min">
+          {product.gender}
+        </span>
         <Link
           className="hover:text-rose-600 transition-all"
           href={`/product/${product.slug}`}

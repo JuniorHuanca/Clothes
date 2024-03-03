@@ -3,6 +3,7 @@ import { Formik, FieldArray } from "formik";
 import Form from "@/components/Dashboard/NewProduct/Form";
 import { FormDataNewProduct } from "@/shared/types";
 import { validationSchema } from "@/shared/validationsForms";
+import { toast } from "sonner";
 
 type Props = {};
 
@@ -35,12 +36,21 @@ const NewProduct = (props: Props) => {
         values,
         errors,
         touched,
+        isValid,
         handleSubmit,
         handleChange,
         handleBlur,
         setFieldValue,
       }) => (
-        <form onSubmit={handleSubmit} className="p-4">
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            if (!isValid)
+              return toast.error("Por favor rellene todos los campos");
+            handleSubmit(e);
+          }}
+          className="p-4"
+        >
           <FieldArray
             name="products"
             render={(arrayHelpers) => (
