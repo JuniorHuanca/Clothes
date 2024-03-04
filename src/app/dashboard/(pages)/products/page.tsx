@@ -1,9 +1,30 @@
-type Props = {}
+import Cards from "@/components/Products/Cards";
+import CardsSkeleton from "@/components/Products/CardsSkeleton";
+import { Metadata } from "next";
+import { Suspense } from "react";
 
-const Products = (props: Props) => {
+type Props = {
+  searchParams?: {
+    page?: string;
+    genders?: string;
+    tags?: string;
+    sort?: string;
+  };
+};
+const Products = ({ searchParams }: Props) => {
   return (
-    <div>Products</div>
-  )
-}
+    <>
+      <h1 className="text-xl sm:text-3xl font-bold my-4">
+        Todos los productos
+      </h1>
+      <Suspense
+        key={`${searchParams?.page}_${searchParams?.genders}_${searchParams?.tags}_${searchParams?.sort}`}
+        fallback={<CardsSkeleton />}
+      >
+        <Cards searchParams={searchParams} />
+      </Suspense>
+    </>
+  );
+};
 
-export default Products
+export default Products;

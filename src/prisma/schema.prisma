@@ -56,6 +56,7 @@ model User {
   emailVerified  DateTime?
   image          String?
   password       String?
+  cart           Cart?
   roleId         Int
   role           Role      @relation(fields: [roleId], references: [id])
   sessions       Session[]
@@ -68,4 +69,40 @@ model Role {
   name   String   @unique
   routes String[]
   users  User[]
+}
+
+model Cart {
+  id        Int        @id @default(autoincrement())
+  user      User       @relation(fields: [userId], references: [id])
+  userId    String     @unique
+  products  CartItem[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model Product {
+  slug        String     @id @unique
+  description String
+  images      String[]
+  inStock     Int
+  price       Int
+  sizes       String[]
+  type        String
+  tags        String[]
+  title       String
+  gender      String
+  CartItem    CartItem[]
+}
+
+model CartItem {
+  id          Int      @id @default(autoincrement())
+  quantity    Int
+  product     Product  @relation(fields: [productSlug], references: [slug], onDelete: Cascade)
+  productSlug String
+  cart        Cart     @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  cartId      Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([productSlug, cartId])
 }

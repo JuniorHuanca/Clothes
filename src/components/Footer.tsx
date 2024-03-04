@@ -1,22 +1,11 @@
 import { Facebook, Github, Instagram, Shirt, Twitter } from "lucide-react";
 import Link from "next/link";
 import Tooltip from "./Tooltip";
+import { linksNavAndFooter } from "@/shared/data";
 
 type Props = {};
 
 const Footer = (props: Props) => {
-  const links = [
-    { name: "Inicio", route: "/" },
-    { name: "Productos", route: "/products" },
-    { name: "Ofertas", route: "/special-offers" },
-    { name: "Carrito", route: "/cart" },
-    // { name: "Finalizar Compra", route: "/checkout" },
-    // { name: "Mi Cuenta", route: "/my-account" },
-    // { name: "Ayuda/Soporte", route: "/help" },
-    // { name: "Seguimiento de Pedidos", route: "/order-tracking" },
-    // { name: "Blog", route: "/blog" },
-    { name: "Contacto", route: "/contact" },
-  ];
   return (
     <footer>
       <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6 lg:px-8">
@@ -30,7 +19,7 @@ const Footer = (props: Props) => {
         </p>
 
         <ul className="mt-12 flex flex-wrap justify-center gap-6 md:gap-8 lg:gap-12">
-          {links.map((e) => (
+          {linksNavAndFooter.map((e) => (
             <li key={e.name}>
               <Link
                 className="relative w-fit block after:block after:content-[''] after:absolute after:h-[2px] after:bg-rose-600 after:w-full after:scale-x-0 after:hover:scale-x-100 after:transition after:duration-300 after:origin-left hover:text-rose-600 text-base text-gray-700"
