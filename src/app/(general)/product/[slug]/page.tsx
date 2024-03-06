@@ -5,7 +5,7 @@ import { IProduct } from "@/shared/types";
 import { formatPrice } from "@/shared/utils";
 import { notFound } from "next/navigation";
 import { Metadata, ResolvingMetadata } from "next";
-import { MinusSquare, PlusSquare } from "lucide-react";
+import CartLogic from "@/components/Detail/CartLogic";
 type Props = {
   params: { slug: string };
 };
@@ -28,37 +28,7 @@ const Detail = async ({ params }: Props) => {
           <p className="text-lg mb-8">{formatPrice(product.price)}</p>
           <h3 className="font-bold text-sm">Descripción</h3>
           <p className="mb-4">{product.description}</p>
-          <div>
-            <div className="flex gap-2">
-              {product.sizes.map((size) => (
-                <button
-                  key={size}
-                  type="button"
-                  className="hover:underline text-lg"
-                >
-                  {size}
-                </button>
-              ))}
-            </div>
-            <div className="flex">
-              <button type="button">
-                <MinusSquare size={30} />
-              </button>
-              <span className="w-20 m-3 px-5 py-1 bg-gray-200 text-center rounded">
-                {product.inStock}
-              </span>
-              <button type="button">
-                <PlusSquare size={30} />
-              </button>
-            </div>
-            <p className="text-lg mb-1">Stock: {product.inStock}</p>
-            <button
-              type="button"
-              className="rounded-md bg-rose-600 px-5 py-2.5 text-sm font-medium text-white shadow"
-            >
-              Agregar al carrito
-            </button>
-          </div>
+          <CartLogic product={product} />
         </div>
       </div>
     </div>
