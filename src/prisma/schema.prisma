@@ -43,10 +43,29 @@ model Session {
 }
 
 model Order {
-  id             Int     @id @default(autoincrement())
+  id             String      @id @unique
   description    String
   deliveryUserId String?
-  deliveryUser   User?   @relation(fields: [deliveryUserId], references: [id])
+  deliveryUser   User?       @relation(fields: [deliveryUserId], references: [id])
+  userId         String
+  user           User        @relation("PaidByUser", fields: [userId], references: [id])
+  products       OrderItem[]
+  totalPrice     Int
+  status         String
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+}
+
+model OrderItem {
+  id          Int      @id @default(autoincrement())
+  quantity    Int
+  size        String
+  product     Product  @relation(fields: [productSlug], references: [slug])
+  productSlug String
+  order       Order    @relation(fields: [orderId], references: [id])
+  orderId     String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model User {
@@ -62,6 +81,7 @@ model User {
   sessions       Session[]
   accounts       Account[]
   assignedOrders Order[]
+  orders         Order[]   @relation("PaidByUser")
 }
 
 model Role {
@@ -81,7 +101,7 @@ model Cart {
 }
 
 model Product {
-  slug        String     @id @unique
+  slug        String      @id @unique
   description String
   images      String[]
   inStock     Int
@@ -92,11 +112,13 @@ model Product {
   title       String
   gender      String
   CartItem    CartItem[]
+  OrderItem   OrderItem[]
 }
 
 model CartItem {
   id          Int      @id @default(autoincrement())
   quantity    Int
+  size        String
   product     Product  @relation(fields: [productSlug], references: [slug], onDelete: Cascade)
   productSlug String
   cart        Cart     @relation(fields: [cartId], references: [id], onDelete: Cascade)
