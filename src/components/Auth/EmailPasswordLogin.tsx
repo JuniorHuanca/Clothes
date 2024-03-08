@@ -18,8 +18,8 @@ const EmailPasswordLogin = (props: Props) => {
   const [visibility, setVisibility] = useState(false);
   const callbackUrl = searchParams.get("callbackUrl");
   const initialValues = {
-    email: "",
-    password: "",
+    email: "user21@gmail.com",
+    password: "123456789",
   };
   const validationSchema = Yup.object().shape({
     email: Yup.string()
