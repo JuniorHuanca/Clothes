@@ -23,6 +23,7 @@ const Login = async (props: Props) => {
             Regístrate
           </Link>
         </p>
+        <p>Administrador: &quot;admin21@gmail.com&quot;.</p>
       </div>
     </main>
   );

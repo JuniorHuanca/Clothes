@@ -43,10 +43,29 @@ model Session {
 }
 
 model Order {
-  id             Int     @id @default(autoincrement())
+  id             String      @id @unique
   description    String
   deliveryUserId String?
-  deliveryUser   User?   @relation(fields: [deliveryUserId], references: [id])
+  deliveryUser   User?       @relation(fields: [deliveryUserId], references: [id])
+  userId         String
+  user           User        @relation("PaidByUser", fields: [userId], references: [id])
+  products       OrderItem[]
+  totalPrice     Int
+  status         String
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+}
+
+model OrderItem {
+  id          Int      @id @default(autoincrement())
+  quantity    Int
+  size        String
+  product     Product  @relation(fields: [productSlug], references: [slug])
+  productSlug String
+  order       Order    @relation(fields: [orderId], references: [id])
+  orderId     String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model User {
@@ -56,11 +75,13 @@ model User {
   emailVerified  DateTime?
   image          String?
   password       String?
+  cart           Cart?
   roleId         Int
   role           Role      @relation(fields: [roleId], references: [id])
   sessions       Session[]
   accounts       Account[]
   assignedOrders Order[]
+  orders         Order[]   @relation("PaidByUser")
 }
 
 model Role {
@@ -68,4 +89,42 @@ model Role {
   name   String   @unique
   routes String[]
   users  User[]
+}
+
+model Cart {
+  id        Int        @id @default(autoincrement())
+  user      User       @relation(fields: [userId], references: [id])
+  userId    String     @unique
+  products  CartItem[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model Product {
+  slug        String      @id @unique
+  description String
+  images      String[]
+  inStock     Int
+  price       Int
+  sizes       String[]
+  type        String
+  tags        String[]
+  title       String
+  gender      String
+  CartItem    CartItem[]
+  OrderItem   OrderItem[]
+}
+
+model CartItem {
+  id          Int      @id @default(autoincrement())
+  quantity    Int
+  size        String
+  product     Product  @relation(fields: [productSlug], references: [slug], onDelete: Cascade)
+  productSlug String
+  cart        Cart     @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  cartId      Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([productSlug, cartId])
 }

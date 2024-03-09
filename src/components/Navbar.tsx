@@ -1,11 +1,11 @@
 "use client";
-import { CircleUser, LogOut, Menu, Search, Shirt } from "lucide-react";
+import { CircleUser, Menu, Search, Shirt } from "lucide-react";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import Tooltip from "./Tooltip";
 import { useState } from "react";
 import SearchBar from "./SearchBar";
+import { linksNavAndFooter } from "@/shared/data";
 
 type Props = {};
 
@@ -13,18 +13,6 @@ const Navbar = (props: Props) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isSearch, setIsSearch] = useState(false);
   const { data: session } = useSession();
-  const links = [
-    { name: "Inicio", route: "/" },
-    { name: "Productos", route: "/products" },
-    { name: "Ofertas", route: "/special-offers" },
-    { name: "Carrito", route: "/cart" },
-    // { name: "Finalizar Compra", route: "/checkout" },
-    // { name: "Mi Cuenta", route: "/my-account" },
-    // { name: "Ayuda/Soporte", route: "/help" },
-    // { name: "Seguimiento de Pedidos", route: "/order-tracking" },
-    // { name: "Blog", route: "/blog" },
-    { name: "Contacto", route: "/contact" },
-  ];
   return (
     <header>
       <div className="mx-auto max-w-screen-xl px-4">
@@ -38,7 +26,7 @@ const Navbar = (props: Props) => {
 
           <div className="hidden md:block">
             <ul className="flex items-center gap-6 text-sm">
-              {links.map((e) => (
+              {linksNavAndFooter.map((e) => (
                 <li key={e.name}>
                   <Link
                     title={`Ir a ${e.name}`}
@@ -128,7 +116,7 @@ const Navbar = (props: Props) => {
       <SearchBar isSearch={isSearch} />
       <div className={`md:hidden ${isOpen ? "block" : "hidden"}`}>
         <ul className="flex flex-col p-4 gap-4 text-sm">
-          {links.map((e) => (
+          {linksNavAndFooter.map((e) => (
             <li key={e.name}>
               <Link
                 title={`Ir a ${e.name}`}
