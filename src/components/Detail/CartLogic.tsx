@@ -1,11 +1,19 @@
-import { IProduct } from "@/shared/types";
+import { useFetch } from "@/hooks/useFetch";
+import { authOptions } from "@/shared/authOptions";
+import { IProduct, IProductCart } from "@/shared/types";
 import { MinusSquare, PlusSquare } from "lucide-react";
+import { getServerSession } from "next-auth";
 
 type Props = {
   product: IProduct;
 };
 
-const CartLogic = ({ product }: Props) => {
+const CartLogic = async ({ product }: Props) => {
+  const session = await getServerSession(authOptions);
+  const item = await useFetch<IProductCart>(
+    `/api/v1/cart?slug=${product.slug}&userId=${session?.user.id}`
+  );
+
   return (
     <div>
       <div className="flex gap-2">
@@ -24,7 +32,7 @@ const CartLogic = ({ product }: Props) => {
           <MinusSquare size={30} />
         </button>
         <span className="w-20 m-3 px-5 py-1 bg-slate-200 text-center rounded">
-          {product.inStock}
+          {item.quantity || 0}
         </span>
         <button type="button" disabled={product.inStock === 0}>
           <PlusSquare size={30} />

@@ -6,7 +6,7 @@ type Props = {
 };
 
 const Carrosel = ({ slides }: Props) => {
-  const [current, setCurrent] = useState(0);
+  const [current, setCurrent] = useState(1);
 
   const previousSlide = () => {
     if (current === 0) setCurrent(slides.length - 1);
