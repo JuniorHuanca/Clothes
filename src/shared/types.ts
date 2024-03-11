@@ -21,6 +21,12 @@ export interface IProductCart {
   updatedAt: string;
 }
 
+export interface IProductCartSimple {
+  quantity: number;
+  size: string;
+  productSlug: string;
+}
+
 export interface IUser {
   id: string;
   name: string;
