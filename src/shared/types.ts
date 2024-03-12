@@ -11,6 +11,22 @@ export interface IProduct {
   gender: string;
 }
 
+export interface IProductCart {
+  id: number;
+  quantity: number;
+  size: string;
+  productSlug: string;
+  cartId: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface IProductCartSimple {
+  quantity: number;
+  size: string;
+  productSlug: string;
+}
+
 export interface IUser {
   id: string;
   name: string;
