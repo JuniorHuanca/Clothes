@@ -1,7 +1,8 @@
 "use client";
-import { IProduct, IProductCart, IProductCartSimple } from "@/shared/types";
+import { IProduct, IProductCart } from "@/shared/types";
 import { MinusSquare, PlusSquare } from "lucide-react";
 import { Session } from "next-auth";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -12,8 +13,11 @@ type Props = {
 };
 
 const Logic = ({ product, item, session }: Props) => {
+  const { refresh } = useRouter();
   const [quantity, setQuantity] = useState(0);
   const [size, setSize] = useState("");
+  const [isProcessing, setIsProcessing] = useState(false);
+
   const handleQuantity = (value: number) => {
     setQuantity(value);
   };
@@ -22,23 +26,33 @@ const Logic = ({ product, item, session }: Props) => {
   };
   const handleItemCart = async () => {
     if (!session) return toast.error("Necesitas iniciar sesión para continuar");
-    const res = await fetch(`/api/v1/cart`, {
-      method: "POST",
-      body: JSON.stringify({
-        userId: session.user.id,
-        product: {
-          quantity,
-          size,
-          productSlug: product.slug,
+    setIsProcessing(true);
+    try {
+      const res = await fetch(`/api/v1/cart`, {
+        method: "POST",
+        body: JSON.stringify({
+          userId: session.user.id,
+          product: {
+            quantity,
+            size,
+            productSlug: product.slug,
+          },
+        }),
+        headers: {
+          "Content-Type": "application/json",
         },
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    console.log(res)
-    if (res.ok) {
-      return toast.success("Producto añadido al carro correctamente");
+      });
+      if (res.ok) {
+        toast.success("Producto añadido al carro correctamente");
+      } else {
+        const data = await res.json();
+        toast.error(data.message);
+      }
+      refresh();
+    } catch (error) {
+      toast.error("Se produjo un error al agregar el producto al carrito");
+    } finally {
+      setIsProcessing(false);
     }
   };
 
@@ -82,10 +96,11 @@ const Logic = ({ product, item, session }: Props) => {
       <p className="text-lg mb-1">
         {product.inStock > 0
           ? `Disponibles: ${product.inStock}`
-          : "Producto agotado temporalmente"}{" "}
+          : "Producto agotado temporalmente"}
+        {" - "}
         {typeof item === "object" && (
           <strong className="text-lg mb-1" key={item.quantity}>
-            - En tu carrito: {item.quantity}
+            ¡Artículo en tu carrito!
           </strong>
         )}
       </p>
@@ -93,10 +108,16 @@ const Logic = ({ product, item, session }: Props) => {
       <button
         type="button"
         className="rounded-md bg-rose-600 px-5 py-2.5 text-sm font-medium text-white shadow disabled:opacity-50"
-        disabled={product.inStock === 0}
+        disabled={
+          product.inStock === 0 || quantity === 0 || !size || isProcessing
+        }
         onClick={handleItemCart}
       >
-        {product.inStock ? "Agregar al carrito" : "Producto Agotado"}
+        {isProcessing
+          ? "Procesando..."
+          : product.inStock
+          ? "Agregar al carrito"
+          : "Producto Agotado"}
       </button>
     </>
   );

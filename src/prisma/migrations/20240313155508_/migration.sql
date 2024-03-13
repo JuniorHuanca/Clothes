@@ -149,7 +149,7 @@ CREATE UNIQUE INDEX "Cart_userId_key" ON "Cart"("userId");
 CREATE UNIQUE INDEX "Product_slug_key" ON "Product"("slug");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "CartItem_productSlug_cartId_key" ON "CartItem"("productSlug", "cartId");
+CREATE UNIQUE INDEX "CartItem_productSlug_size_cartId_key" ON "CartItem"("productSlug", "size", "cartId");
 
 -- AddForeignKey
 ALTER TABLE "Account" ADD CONSTRAINT "Account_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;

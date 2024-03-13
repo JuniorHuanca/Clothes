@@ -43,9 +43,10 @@ export async function POST(request: NextRequest) {
         products: {
           upsert: {
             where: {
-              productSlug_cartId: {
+              productSlug_size_cartId: {
                 cartId: cart.id,
                 productSlug: product.productSlug,
+                size: product.size,
               },
             },
             create: {
@@ -81,15 +82,14 @@ export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
     const userId = searchParams.get("userId");
-    const slug = searchParams.get("slug");
-    if (!userId || !slug)
-      return Response.json("userId and slug is required", { status: 400 });
-    const item = await prisma.cartItem.findFirst({
-      where: { cart: { userId: userId }, productSlug: slug },
+    if (!userId) return Response.json("userId", { status: 400 });
+    const cart = await prisma.cart.findUnique({
+      where: { userId: userId },
+      include: { products: true },
     });
-    if (!item)
-      return Response.json("product not found in cart", { status: 200 });
-    return Response.json(item, { status: 200 });
+    if (!cart)
+      return Response.json("product not found in cart", { status: 404 });
+    return Response.json(cart, { status: 200 });
   } catch (error) {
     if (error instanceof Error) {
       return Response.json(
