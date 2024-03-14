@@ -17,7 +17,7 @@ const Detail = async ({ params }: Props) => {
   }
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="max-w-screen-2xl mx-auto w-full flex flex-col items-center">
       <BackButton />
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 max-w-[1400px] flex-1">
         <div className="col-span-1 lg:col-span-2">

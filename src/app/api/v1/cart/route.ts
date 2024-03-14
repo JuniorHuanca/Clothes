@@ -85,7 +85,7 @@ export async function GET(request: NextRequest) {
     if (!userId) return Response.json("userId", { status: 400 });
     const cart = await prisma.cart.findUnique({
       where: { userId: userId },
-      include: { products: true },
+      include: { products: { include: { product: true } } },
     });
     if (!cart)
       return Response.json("product not found in cart", { status: 404 });

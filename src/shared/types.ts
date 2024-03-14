@@ -17,6 +17,7 @@ export interface IProductCart {
   size: string;
   productSlug: string;
   cartId: number;
+  product: IProduct;
   createdAt: string;
   updatedAt: string;
 }

@@ -97,10 +97,10 @@ const Logic = ({ product, item, session }: Props) => {
         {product.inStock > 0
           ? `Disponibles: ${product.inStock}`
           : "Producto agotado temporalmente"}
-        {" - "}
+
         {typeof item === "object" && (
           <strong className="text-lg mb-1" key={item.quantity}>
-            ¡Artículo en tu carrito!
+            {" "}¡Artículo en tu carrito!
           </strong>
         )}
       </p>
