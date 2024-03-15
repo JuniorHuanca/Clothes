@@ -1,10 +1,10 @@
 "use client";
+import { handleItemCart } from "@/shared/actions";
 import { IProduct, IProductCart } from "@/shared/types";
 import { MinusSquare, PlusSquare } from "lucide-react";
 import { Session } from "next-auth";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { toast } from "sonner";
 
 type Props = {
   product: IProduct;
@@ -23,37 +23,6 @@ const Logic = ({ product, item, session }: Props) => {
   };
   const handleSize = (value: string) => {
     setSize(value);
-  };
-  const handleItemCart = async () => {
-    if (!session) return toast.error("Necesitas iniciar sesión para continuar");
-    setIsProcessing(true);
-    try {
-      const res = await fetch(`/api/v1/cart`, {
-        method: "POST",
-        body: JSON.stringify({
-          userId: session.user.id,
-          product: {
-            quantity,
-            size,
-            productSlug: product.slug,
-          },
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      if (res.ok) {
-        toast.success("Producto añadido al carro correctamente");
-      } else {
-        const data = await res.json();
-        toast.error(data.message);
-      }
-      refresh();
-    } catch (error) {
-      toast.error("Se produjo un error al agregar el producto al carrito");
-    } finally {
-      setIsProcessing(false);
-    }
   };
 
   return (
@@ -100,7 +69,8 @@ const Logic = ({ product, item, session }: Props) => {
 
         {typeof item === "object" && (
           <strong className="text-lg mb-1" key={item.quantity}>
-            {" "}¡Artículo en tu carrito!
+            {" "}
+            ¡Artículo en tu carrito!
           </strong>
         )}
       </p>
@@ -111,7 +81,16 @@ const Logic = ({ product, item, session }: Props) => {
         disabled={
           product.inStock === 0 || quantity === 0 || !size || isProcessing
         }
-        onClick={handleItemCart}
+        onClick={() =>
+          handleItemCart({
+            session,
+            quantity,
+            size,
+            productSlug: product.slug,
+            setIsProcessing,
+            refresh,
+          })
+        }
       >
         {isProcessing
           ? "Procesando..."

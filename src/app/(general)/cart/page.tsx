@@ -2,8 +2,9 @@ import { Card, Summary } from "@/components/Cart";
 import { useFetch } from "@/hooks/useFetch";
 import { authOptions } from "@/shared/authOptions";
 import { IProductCart } from "@/shared/types";
-import { User } from "lucide-react";
+import { ShoppingCart, User } from "lucide-react";
 import { getServerSession } from "next-auth";
+import Link from "next/link";
 
 type Props = {};
 
@@ -30,6 +31,21 @@ const Cart = async (props: Props) => {
           <div className="flex-1 bg-gray-50">
             <h2 className="text-2xl font-bold p-4">Carrito de Compras</h2>
             <hr />
+            {!cart.products.length && (
+              <div className="text-center py-8">
+                <ShoppingCart size={50} className="mx-auto mb-4" />
+                <h2 className="text-2xl font-semibold mb-4">
+                  Tu carrito está vacío
+                </h2>
+                <p className="text-lg mb-4">
+                  ¡Agrega productos para comenzar a llenarlo!
+                </p>
+
+                <Link href="/products" className="mb-4 text-rose-600 underline">
+                  Explorar productos
+                </Link>
+              </div>
+            )}
             <div className="flex-1 flex flex-col gap-2">
               {cart.products.map((product, index) => (
                 <div key={index}>

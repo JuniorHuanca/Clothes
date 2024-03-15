@@ -59,7 +59,7 @@ const Summary = ({ cart, session }: Props) => {
         type="button"
         className="inline-flex justify-center text-white p-4 bg-rose-600 hover:bg-rose-400 text-center disabled:opacity-50 disabled:bg-black"
         onClick={handleCheckout}
-        disabled={isProcessing}
+        disabled={isProcessing || !cart.length}
       >
         {isProcessing ? "Cargando..." : "Continuar compra"}
       </button>

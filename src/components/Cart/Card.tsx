@@ -7,42 +7,40 @@ import { MinusSquare, PlusSquare, Trash } from "lucide-react";
 import { toast } from "sonner";
 import { Session } from "next-auth";
 import Link from "next/link";
+import Confirmation from "../Modals/Confirmation";
+import { useRouter } from "next/navigation";
+import { handleItemCart } from "@/shared/actions";
 
 interface Props extends IProductCart {
   session: Session;
 }
 
 const Card = ({ session, ...props }: Props) => {
-  const [quantity, setQuantity] = useState(props.quantity);
-  const handleItemCart = async () => {
+  const { refresh } = useRouter();
+  const [deleteConfirmation, setDeleteConfirmation] = useState(false);
+  const [processing, setIsProcessing] = useState(false);
+
+  const handleDeleteItemCart = async () => {
     if (!session) return toast.error("Necesitas iniciar sesión para continuar");
-    // setIsProcessing(true);
+    setIsProcessing(true);
     try {
-      const res = await fetch(`/api/v1/cart`, {
-        method: "POST",
-        body: JSON.stringify({
-          userId: session.user.id,
-          product: {
-            quantity,
-            size: props.size,
-            productSlug: props.product.slug,
-          },
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const res = await fetch(
+        `/api/v1/cart?itemId=${props.id}&userId=${session.user.id}`,
+        {
+          method: "DELETE",
+        }
+      );
       if (res.ok) {
-        toast.success("Producto añadido al carro correctamente");
+        toast.success("Producto eliminado del carrito correctamente");
       } else {
         const data = await res.json();
         toast.error(data.message);
       }
-      // refresh();
+      refresh();
     } catch (error) {
       toast.error("Se produjo un error al agregar el producto al carrito");
     } finally {
-      // setIsProcessing(false);
+      setIsProcessing(false);
     }
   };
 
@@ -76,18 +74,38 @@ const Card = ({ session, ...props }: Props) => {
         <div className="self-center md:max-w-[50%] w-max flex items-center md:absolute top-0 right-0 border-2 rounded-md border-gray-200">
           <button
             type="button"
-            className=""
-            disabled={props.product.inStock === 0 || quantity === 0}
-            // onClick={() => handleQuantity(quantity - 1)}
+            className="disabled:opacity-50"
+            disabled={
+              props.product.inStock === 0 || props.quantity === 1 || processing
+            }
+            onClick={() =>
+              handleItemCart({
+                session,
+                quantity: props.quantity - 1,
+                size: props.size,
+                productSlug: props.productSlug,
+                setIsProcessing,
+                refresh,
+              })
+            }
           >
             <MinusSquare size={40} />
           </button>
-          <span className="w-16 text-center rounded">{quantity}</span>
+          <span className="w-16 text-center rounded">{props.quantity}</span>
           <button
             type="button"
-            className=""
-            disabled={props.product.inStock === 0 || quantity === 0}
-            // onClick={() => handleQuantity(quantity - 1)}
+            className="disabled:opacity-50"
+            disabled={props.product.inStock === props.quantity || processing}
+            onClick={() =>
+              handleItemCart({
+                session,
+                quantity: props.quantity + 1,
+                size: props.size,
+                productSlug: props.productSlug,
+                setIsProcessing,
+                refresh,
+              })
+            }
           >
             <PlusSquare size={40} />
           </button>
@@ -95,28 +113,25 @@ const Card = ({ session, ...props }: Props) => {
         <div className="mt-6 md:m-0 self-center md:max-w-[50%] md:absolute bottom-0 left-0">
           <button
             type="button"
+            disabled={processing}
             className="flex gap-1 items-center text-gray-600"
-            // onClick={() => setDeleteConfirmation(true)}
+            onClick={() => setDeleteConfirmation(true)}
           >
             <Trash />
             Remove
           </button>
         </div>
       </div>
-      {/* {deleteConfirmation && (
-        <DeleteConfirmation
+      {deleteConfirmation && (
+        <Confirmation
           title="Eliminar Producto"
           message="¿Estás seguro de que deseas eliminar este producto de tu carrito de compras? Ten en cuenta que este producto se eliminará del carrito, pero aún puedes agregarlo nuevamente en el futuro si lo necesitas."
           confirmText="Eliminar"
           cancelText="Cancelar"
-          onConfirm={() =>
-            handleDelete({
-              ...propsForFunctions,
-            })
-          }
+          onConfirm={handleDeleteItemCart}
           onCancel={() => setDeleteConfirmation(false)}
         />
-      )} */}
+      )}
     </div>
   );
 };

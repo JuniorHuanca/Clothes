@@ -30,7 +30,7 @@ const Confirmation = ({
           <p>{message}</p>
           <div className="w-full flex justify-evenly">
             <button
-              className="p-3 rounded-lg bg-red-500 hover:bg-red-600 text-white"
+              className="rounded-md bg-rose-600 px-5 py-2.5 text-sm font-medium text-white shadow"
               type="button"
               onClick={() => {
                 setIsIn(false);
@@ -43,7 +43,7 @@ const Confirmation = ({
               {confirmText}
             </button>
             <button
-              className="p-3 rounded-lg bg-green-500 hover:bg-green-600 text-white"
+              className="rounded-md bg-rose-100 px-5 py-2.5 text-sm font-medium text-rose-600"
               type="button"
               onClick={() => {
                 setIsIn(false);
