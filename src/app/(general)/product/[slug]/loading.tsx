@@ -9,7 +9,7 @@ const Loading = (props: Props) => {
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 max-w-[1400px] w-full">
         <div className="col-span-1 lg:col-span-2">
-          <div className="bg-gray-300 w-full animate-pulse h-[90vh] rounded-2xl" />
+          <div className="bg-gray-300 w-full animate-pulse aspect-square rounded-2xl" />
         </div>
         <div className="col-span-1 lg:col-span-2 p-2 md:p-4">
           <div className="flex flex-col justify-between gap-2 rounded-lg select-none w-full">

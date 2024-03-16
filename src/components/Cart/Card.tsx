@@ -118,7 +118,7 @@ const Card = ({ session, ...props }: Props) => {
             onClick={() => setDeleteConfirmation(true)}
           >
             <Trash />
-            Remove
+            Eliminar
           </button>
         </div>
       </div>
