@@ -11,7 +11,7 @@ type Props = {
 const CartLogic = async ({ product }: Props) => {
   const session = await getServerSession(authOptions);
   const item = await useFetch<IProductCart>(
-    `/api/v1/cart?slug=${product.slug}&userId=${session?.user.id}`
+    `/api/v1/cart/${product.slug}?userId=${session?.user.id}`
   );
 
   return (

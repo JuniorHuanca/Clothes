@@ -126,5 +126,5 @@ model CartItem {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  @@unique([productSlug, cartId])
+  @@unique([productSlug, size, cartId])
 }

@@ -2,7 +2,7 @@ import prisma from "@/lib/prismadb";
 import { IProductCartSimple } from "@/shared/types";
 import { NextRequest } from "next/server";
 
-export async function POST(request: NextRequest) {
+export async function PATCH(request: NextRequest) {
   try {
     const body = await request.json();
     const {
@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
       }),
     ]);
     if (productInStock && product.quantity > productInStock.inStock)
-      throw new Error("Stock is less than the quantity requested");
+      throw new Error("El stock es menor que la cantidad solicitada");
     const updateCart = await prisma.cart.upsert({
       where: { userId: userId },
       create: {
@@ -43,9 +43,10 @@ export async function POST(request: NextRequest) {
         products: {
           upsert: {
             where: {
-              productSlug_cartId: {
+              productSlug_size_cartId: {
                 cartId: cart.id,
                 productSlug: product.productSlug,
+                size: product.size,
               },
             },
             create: {
@@ -81,14 +82,46 @@ export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
     const userId = searchParams.get("userId");
-    const slug = searchParams.get("slug");
-    if (!userId || !slug)
+    if (!userId) return Response.json("userId", { status: 400 });
+    const cart = await prisma.cart.findUnique({
+      where: { userId: userId },
+      include: {
+        products: {
+          include: { product: true },
+          orderBy: { product: { title: "asc" } },
+        },
+      },
+    });
+    if (!cart)
+      return Response.json("product not found in cart", { status: 404 });
+    return Response.json(cart, { status: 200 });
+  } catch (error) {
+    if (error instanceof Error) {
+      return Response.json(
+        {
+          message: error.message,
+        },
+        { status: 500 }
+      );
+    }
+  }
+}
+
+export async function DELETE(request: NextRequest) {
+  try {
+    const searchParams = request.nextUrl.searchParams;
+    const userId = searchParams.get("userId");
+    const itemId = searchParams.get("itemId");
+    if (!userId || !itemId)
       return Response.json("userId and slug is required", { status: 400 });
-    const item = await prisma.cartItem.findFirst({
-      where: { cart: { userId: userId }, productSlug: slug },
+    const item = await prisma.cartItem.delete({
+      where: {
+        id: Number(itemId),
+        cart: { userId: userId },
+      },
     });
     if (!item)
-      return Response.json("product not found in cart", { status: 200 });
+      return Response.json("product not found in cart", { status: 404 });
     return Response.json(item, { status: 200 });
   } catch (error) {
     if (error instanceof Error) {

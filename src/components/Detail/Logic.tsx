@@ -1,9 +1,10 @@
 "use client";
-import { IProduct, IProductCart, IProductCartSimple } from "@/shared/types";
+import { handleItemCart } from "@/shared/actions";
+import { IProduct, IProductCart } from "@/shared/types";
 import { MinusSquare, PlusSquare } from "lucide-react";
 import { Session } from "next-auth";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { toast } from "sonner";
 
 type Props = {
   product: IProduct;
@@ -12,34 +13,16 @@ type Props = {
 };
 
 const Logic = ({ product, item, session }: Props) => {
+  const { refresh } = useRouter();
   const [quantity, setQuantity] = useState(0);
   const [size, setSize] = useState("");
+  const [isProcessing, setIsProcessing] = useState(false);
+
   const handleQuantity = (value: number) => {
     setQuantity(value);
   };
   const handleSize = (value: string) => {
     setSize(value);
-  };
-  const handleItemCart = async () => {
-    if (!session) return toast.error("Necesitas iniciar sesión para continuar");
-    const res = await fetch(`/api/v1/cart`, {
-      method: "POST",
-      body: JSON.stringify({
-        userId: session.user.id,
-        product: {
-          quantity,
-          size,
-          productSlug: product.slug,
-        },
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    console.log(res)
-    if (res.ok) {
-      return toast.success("Producto añadido al carro correctamente");
-    }
   };
 
   return (
@@ -82,10 +65,12 @@ const Logic = ({ product, item, session }: Props) => {
       <p className="text-lg mb-1">
         {product.inStock > 0
           ? `Disponibles: ${product.inStock}`
-          : "Producto agotado temporalmente"}{" "}
+          : "Producto agotado temporalmente"}
+
         {typeof item === "object" && (
           <strong className="text-lg mb-1" key={item.quantity}>
-            - En tu carrito: {item.quantity}
+            {" "}
+            ¡Artículo en tu carrito!
           </strong>
         )}
       </p>
@@ -93,10 +78,25 @@ const Logic = ({ product, item, session }: Props) => {
       <button
         type="button"
         className="rounded-md bg-rose-600 px-5 py-2.5 text-sm font-medium text-white shadow disabled:opacity-50"
-        disabled={product.inStock === 0}
-        onClick={handleItemCart}
+        disabled={
+          product.inStock === 0 || quantity === 0 || !size || isProcessing
+        }
+        onClick={() =>
+          handleItemCart({
+            session,
+            quantity,
+            size,
+            productSlug: product.slug,
+            setIsProcessing,
+            refresh,
+          })
+        }
       >
-        {product.inStock ? "Agregar al carrito" : "Producto Agotado"}
+        {isProcessing
+          ? "Procesando..."
+          : product.inStock
+          ? "Agregar al carrito"
+          : "Producto Agotado"}
       </button>
     </>
   );
