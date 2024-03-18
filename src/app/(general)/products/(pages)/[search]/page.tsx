@@ -4,6 +4,7 @@ import { Metadata } from "next";
 import { Suspense } from "react";
 
 type Props = {
+  params: { search: string };
   searchParams?: {
     page?: string;
     genders?: string;
@@ -12,31 +13,24 @@ type Props = {
   };
 };
 
-export const metadata: Metadata = {
-  title: "Productos",
-};
-
-const Products = async ({ searchParams }: Props) => {
+const Search = ({ params, searchParams }: Props) => {
   const currentPage = Number(searchParams?.page) || 1;
   const genders = searchParams?.genders;
   const tags = searchParams?.tags;
   const sort = searchParams?.sort;
-  const url = `/api/v1/products?page=${currentPage}${
+  const url = `/api/v1/products/search?page=${currentPage}&search=${params.search}${
     genders ? "&genders=" + genders : ""
   }${tags ? "&tags=" + tags : ""}${sort ? "&sort=" + sort : ""}`;
   return (
     <>
       <h1 className="text-xl sm:text-3xl font-bold my-4">
-        Todos los productos
+        Productos encontrados
       </h1>
-      <Suspense
-        key={`${searchParams?.page}_${searchParams?.genders}_${searchParams?.tags}_${searchParams?.sort}`}
-        fallback={<CardsSkeleton />}
-      >
+      <Suspense key={`${params.search}`} fallback={<CardsSkeleton />}>
         <Cards url={url} />
       </Suspense>
     </>
   );
 };
 
-export default Products;
+export default Search;

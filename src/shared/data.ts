@@ -1,7 +1,7 @@
 export const linksNavAndFooter = [
   { name: "Inicio", route: "/" },
   { name: "Productos", route: "/products" },
-  // { name: "Ofertas", route: "/special-offers" },
+  { name: "Ofertas", route: "/special-offers" },
   { name: "Carrito", route: "/cart" },
   // { name: "Finalizar Compra", route: "/checkout" },
   // { name: "Mi Cuenta", route: "/my-account" },

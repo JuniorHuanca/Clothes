@@ -15,7 +15,7 @@ const Navbar = (props: Props) => {
   const { data: session } = useSession();
   return (
     <header>
-      <div className="mx-auto max-w-screen-xl px-4">
+      <div className="mx-auto max-w-screen-xl">
         <div className="flex h-16 items-center justify-between">
           <div className="md:flex md:items-center md:gap-12">
             <Link className="block text-rose-600" href="/">

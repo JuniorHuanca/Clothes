@@ -1,6 +1,6 @@
 import { baseGenders, baseTags } from "@/data/general";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 type Props = {
   isSearch: boolean;
@@ -9,16 +9,29 @@ type Props = {
 const SearchBar = ({ isSearch }: Props) => {
   const [search, setSearch] = useState("");
   const router = useRouter();
-  const handleSearch = (search: string, type?: string) => {
-    setSearch("");
-    if (type) return router.push(`/products?${type}=${search}`);
-    return router.push(`/products/${search}`);
-  };
+  const handleSearch = useCallback(
+    (search: string, type?: string) => {
+      setSearch("");
+      if (type) return router.push(`/products?${type}=${search}`);
+      return router.push(`/products/${search}`);
+    },
+    [router]
+  );
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Enter") {
+        handleSearch(search);
+      }
+    };
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [handleSearch, search]);
   return (
     <div
-      className={`${
-        isSearch ? "flex" : "hidden"
-      } gap-1 justify-center p-2 w-full`}
+      className={`${isSearch ? "flex" : "hidden"} gap-1 justify-center w-full pb-1`}
     >
       <div className="relative w-full sm:w-auto">
         <input
