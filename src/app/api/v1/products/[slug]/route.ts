@@ -1,4 +1,3 @@
-import { baseProducts } from "@/data/products";
 import prisma from "@/lib/prismadb";
 import { NextRequest } from "next/server";
 
@@ -8,7 +7,7 @@ export async function GET(
 ) {
   try {
     const { slug } = params;
-    const product = baseProducts.find((p) => p.slug === slug);
+    const product = await prisma.product.findUnique({ where: { slug } });
     if (!product) {
       return Response.json("Product not found", { status: 404 });
     }

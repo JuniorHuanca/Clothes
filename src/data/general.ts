@@ -85,3 +85,12 @@ export const sortByTypesTranslate: { [key: string]: string } = {
   ascName: "Alfabético (A - Z)",
   descName: "Alfabético Invertido (Z - A)",
 };
+
+export const orderStatuses = {
+  Pending: "Pendiente",
+  Processing: "Procesando",
+  OutForDelivery: "En Camino",
+  Delivered: "Entregada",
+  FailedDeliveryAttempt: "Intento Fallido",
+  Cancelled: "Cancelada",
+};
