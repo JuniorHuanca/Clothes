@@ -214,11 +214,40 @@ export async function POST(request: NextRequest) {
     }
   }
 }
+
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
     const id = searchParams.get("id") as string;
     const transaction = await stripe.checkout.sessions.retrieve(id);
+    const order = await prisma.order.findUnique({
+      where: { id },
+      include: { products: true },
+    });
+    return Response.json({ transaction, order }, { status: 200 });
+  } catch (error) {
+    if (error instanceof Error) {
+      return Response.json(
+        {
+          message: error.message,
+        },
+        { status: 500 }
+      );
+    }
+  }
+}
+
+export async function PATCH(request: NextRequest) {
+  try {
+    const searchParams = request.nextUrl.searchParams;
+    const id = searchParams.get("id") as string;
+    const transaction = await stripe.checkout.sessions.retrieve(id);
+    await prisma.order.update({
+      where: { id },
+      data: {
+        description: JSON.stringify(transaction.shipping_details),
+      },
+    });
     return Response.json(transaction, { status: 200 });
   } catch (error) {
     if (error instanceof Error) {

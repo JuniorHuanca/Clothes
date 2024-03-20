@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
     const genders = gendersQuery?.split("-");
     const tags = tagsQuery?.split("-");
     const itemsPerPage = 20;
-    console.log(search);
+
     let orderBy: { [key: string]: "asc" | "desc" } = {};
     switch (sort) {
       case "ascPrice":

@@ -20,6 +20,12 @@ const Summary = ({ cart, session }: Props) => {
     try {
       setIsProcessing(true);
       // validate the cart
+      if (cart.some((c) => c.quantity > c.product.inStock)) {
+        return toast.error(
+          "Lo sentimos, uno de los productos en su carrito está agotado o excede la cantidad disponible en stock.",
+          { duration: 10000 }
+        );
+      }
       const stripe = await getStripe();
       if (!stripe)
         return toast.error(
