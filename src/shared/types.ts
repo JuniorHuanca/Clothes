@@ -22,6 +22,10 @@ export interface IProductCart {
   updatedAt: string;
 }
 
+export interface ÏProductOrder extends IProductCart {
+  orderId: string;
+}
+
 export interface IProductCartSimple {
   quantity: number;
   size: string;
@@ -46,10 +50,17 @@ export interface IRole {
 }
 
 export interface IOrder {
-  id: number;
+  id: string;
   description: string;
-  deliveryUserId: string;
-  deliveryUser: IUser;
+  deliveryUserId: string | null;
+  userId: string;
+  totalPrice: number;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+  deliveryUser: IUser | null;
+  user: IUser;
+  products: ÏProductOrder[];
 }
 
 export interface FormValues {
