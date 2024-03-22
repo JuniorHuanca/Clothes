@@ -163,7 +163,7 @@ const Orders = ({ data }: Props) => {
           )}
         </div>
       )}
-      <div className="flex flex-wrap justify-center gap-2 p-2">
+      <div className="flex flex-wrap justify-center gap-4 p-2">
         {data.map((e) => (
           <Order
             key={e.id}
