@@ -1,5 +1,5 @@
 import { IOrder, ÏProductOrder } from "@/shared/types";
-import { formatDate } from "@/shared/utils";
+import { formatDate, formatPrice } from "@/shared/utils";
 
 interface Props extends IOrder {
   onSelect: () => void;
@@ -14,11 +14,20 @@ const Product = (props: ÏProductOrder) => {
         alt={props.productSlug}
         className="w-32 h-32"
       />
-      <div className="flex-1">
+      <div className="flex-1 p-2">
         <p>{props.product.title}</p>
-        <p>{props.product.price}</p>
-        <p>{props.quantity}</p>
-        <p>{props.size}</p>
+        <p>
+          <span className="font-bold text-sm">Precio: </span>
+          {formatPrice(props.product.price)}
+        </p>
+        <p>
+          <span className="font-bold text-sm">Unidades: </span>
+          {props.quantity}
+        </p>
+        <p>
+          <span className="font-bold text-sm">Talla: </span>
+          {props.size}
+        </p>
       </div>
     </div>
   );
