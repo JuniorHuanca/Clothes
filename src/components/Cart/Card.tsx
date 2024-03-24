@@ -2,7 +2,7 @@
 import { IProductCart } from "@/shared/types";
 import { formatPrice } from "@/shared/utils";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MinusSquare, PlusSquare, Trash } from "lucide-react";
 import { toast } from "sonner";
 import { Session } from "next-auth";
@@ -18,6 +18,7 @@ interface Props extends IProductCart {
 const Card = ({ session, ...props }: Props) => {
   const { refresh } = useRouter();
   const [deleteConfirmation, setDeleteConfirmation] = useState(false);
+  const [quantity, setQuantity] = useState(props.quantity);
   const [processing, setIsProcessing] = useState(false);
 
   const handleDeleteItemCart = async () => {
@@ -43,9 +44,16 @@ const Card = ({ session, ...props }: Props) => {
       setIsProcessing(false);
     }
   };
+  useEffect(() => {
+    setQuantity(props.quantity);
+  }, [props.quantity]);
 
   return (
-    <div className="flex flex-col h-auto md:flex-row md:flex-wrap max-[365px]:border-b-2 border-black p-2 md:p-4 gap-4">
+    <div
+      className={`flex flex-col h-auto md:flex-row md:flex-wrap max-[365px]:border-b-2 border-black p-2 md:p-4 gap-4 ${
+        props.quantity > props.product.inStock && "border-2 border-red-500"
+      }`}
+    >
       <div className="relative w-full md:w-36 aspect-square">
         <Image
           layout="fill"
@@ -68,10 +76,21 @@ const Card = ({ session, ...props }: Props) => {
           </span>
         </div>
         <div className="md:max-w-[50%] md:absolute bottom-0 right-0">
+          <p
+            className={`text-gray-600 ${
+              props.quantity > props.product.inStock && "text-red-500"
+            }`}
+          >
+            Disponibles: {props.product.inStock}
+          </p>
           <span className="text-gray-600">(x{props.quantity})</span>{" "}
           <span>{formatPrice(props.quantity * props.product.price)}</span>
         </div>
-        <div className="self-center md:max-w-[50%] w-max flex items-center md:absolute top-0 right-0 border-2 rounded-md border-gray-200">
+        <div
+          className={`self-center md:max-w-[50%] w-max flex items-center md:absolute top-0 right-0 border-2 rounded-md border-gray-200 ${
+            props.quantity > props.product.inStock && "text-red-500"
+          }`}
+        >
           <button
             type="button"
             className="disabled:opacity-50"
@@ -91,7 +110,25 @@ const Card = ({ session, ...props }: Props) => {
           >
             <MinusSquare size={40} />
           </button>
-          <span className="w-16 text-center rounded">{props.quantity}</span>
+          <input
+            className="w-16 text-center rounded"
+            type="number"
+            min={1}
+            onChange={(e) => {
+              setQuantity(Number(e.target.value));
+            }}
+            value={quantity}
+            onBlur={() => {
+              handleItemCart({
+                session,
+                quantity: quantity || 1,
+                size: props.size,
+                productSlug: props.productSlug,
+                setIsProcessing,
+                refresh,
+              });
+            }}
+          />
           <button
             type="button"
             className="disabled:opacity-50"

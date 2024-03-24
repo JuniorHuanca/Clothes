@@ -31,7 +31,7 @@ const Cart = async (props: Props) => {
           <div className="flex-1 bg-gray-50">
             <h2 className="text-2xl font-bold p-4">Carrito de Compras</h2>
             <hr />
-            {!cart.products.length && (
+            {(typeof cart !== "object" || !cart.products.length) && (
               <div className="text-center py-8">
                 <ShoppingCart size={50} className="mx-auto mb-4" />
                 <h2 className="text-2xl font-semibold mb-4">
@@ -47,7 +47,7 @@ const Cart = async (props: Props) => {
               </div>
             )}
             <div className="flex-1 flex flex-col gap-2">
-              {cart.products.map((product, index) => (
+              {cart.products?.map((product, index) => (
                 <div key={index}>
                   <Card session={session} {...product} />
                   <hr />
@@ -57,7 +57,7 @@ const Cart = async (props: Props) => {
           </div>
           <div className="lg:w-1/4 relative">
             <div className="flex flex-col gap-y-8 sticky top-0">
-              <Summary cart={cart.products} session={session} />
+              <Summary cart={cart.products || []} session={session} />
             </div>
           </div>
         </div>

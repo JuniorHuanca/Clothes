@@ -92,8 +92,7 @@ export async function GET(request: NextRequest) {
         },
       },
     });
-    if (!cart)
-      return Response.json("product not found in cart", { status: 404 });
+    if (!cart) return Response.json("cart not found", { status: 404 });
     return Response.json(cart, { status: 200 });
   } catch (error) {
     if (error instanceof Error) {

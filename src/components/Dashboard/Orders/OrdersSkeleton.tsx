@@ -6,7 +6,7 @@ const OrdersSkeleton = (props: Props) => {
   const numberOfSkeletons = 20;
 
   return (
-    <div className="flex flex-wrap justify-center gap-2">
+    <div className="flex flex-wrap justify-center gap-4">
       {Array.from({ length: numberOfSkeletons }, (_, index) => (
         <OrderSkeleton key={index} />
       ))}

@@ -20,10 +20,21 @@ export async function GET(request: NextRequest) {
 
     const orders = await prisma.order.findMany({
       ...(user.role.name === "Administrador"
-        ? { include: { deliveryUser: true }, orderBy: { id: "asc" } }
+        ? {
+            include: {
+              deliveryUser: true,
+              user: true,
+              products: { include: { product: true } },
+            },
+            orderBy: { id: "asc" },
+          }
         : {
             where: { deliveryUserId: userId },
-            include: { deliveryUser: true },
+            include: {
+              deliveryUser: true,
+              user: true,
+              products: { include: { product: true } },
+            },
             orderBy: { id: "asc" },
           }),
     });

@@ -18,7 +18,20 @@ export const calcularSubtotal = (items: IProductCart[]): number => {
   }
   return subtotalTotal;
 };
+
 export const calcularSubtotalItem = (producto: IProductCart): number => {
   const float = (producto.quantity * producto.product.price).toFixed(2);
   return parseFloat(float);
+};
+
+export const formatDate = (
+  date: string,
+  locale: Intl.LocalesArgument = "es",
+  options: Intl.DateTimeFormatOptions = {
+    dateStyle: "medium",
+    timeStyle: "short",
+  }
+) => {
+  const newDate = new Date(date);
+  return new Intl.DateTimeFormat(locale, options).format(newDate);
 };
