@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useState } from "react";
 import SearchBar from "./SearchBar";
 import { linksNavAndFooter } from "@/shared/data";
+import UserActions from "./UserActions";
 
 type Props = {};
 
@@ -68,39 +69,7 @@ const Navbar = (props: Props) => {
                 </div>
               </div>
             )}
-            {session && (
-              <details className="relative flex flex-col">
-                <summary className="block cursor-pointer">
-                  {!session.user.image && <CircleUser size={40} />}
-                  {session.user.image && (
-                    <Image
-                      src={session.user.image}
-                      height={40}
-                      width={40}
-                      alt={session.user.name}
-                      className="rounded-full"
-                    />
-                  )}
-                </summary>
-                <div className="absolute flex flex-col gap-2 top-10 z-10 right-0 bg-white p-2 border-2 rounded-md w-72">
-                  {session.user.role.routes.includes("/dashboard") && (
-                    <Link
-                      href="/dashboard"
-                      className="rounded-md bg-indigo-100 px-5 py-2.5 text-sm text-center font-medium text-indigo-800"
-                    >
-                      Dashboard
-                    </Link>
-                  )}
-                  <button
-                    type="button"
-                    className="rounded-md bg-rose-100 px-5 py-2.5 text-sm font-medium text-rose-600"
-                    onClick={() => signOut()}
-                  >
-                    Cerrar sesión
-                  </button>
-                </div>
-              </details>
-            )}
+            {session && <UserActions session={session} />}
             <div className="block md:hidden">
               <button
                 type="button"

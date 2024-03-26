@@ -1,4 +1,4 @@
-import { IOrder, ÏProductOrder } from "@/shared/types";
+import { IOrder, IProductOrder } from "@/shared/types";
 import { formatDate, formatPrice } from "@/shared/utils";
 
 interface Props extends IOrder {
@@ -6,7 +6,7 @@ interface Props extends IOrder {
   selected: boolean;
   isOneSelected: number;
 }
-const Product = (props: ÏProductOrder) => {
+const Product = (props: IProductOrder) => {
   return (
     <div className="flex">
       <img

@@ -22,7 +22,7 @@ export interface IProductCart {
   updatedAt: string;
 }
 
-export interface ÏProductOrder extends IProductCart {
+export interface IProductOrder extends IProductCart {
   orderId: string;
 }
 
@@ -60,7 +60,7 @@ export interface IOrder {
   updatedAt: string;
   deliveryUser: IUser | null;
   user: IUser;
-  products: ÏProductOrder[];
+  products: IProductOrder[];
 }
 
 export interface FormValues {
