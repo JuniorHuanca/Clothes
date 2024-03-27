@@ -1,6 +1,7 @@
 export const baseRoles = [
-  { name: "Usuario", routes: [] },
+  { id: 1, name: "Usuario", routes: [] },
   {
+    id: 2,
     name: "Administrador",
     routes: [
       "/dashboard",
@@ -10,8 +11,5 @@ export const baseRoles = [
       "/dashboard/orders",
     ],
   },
-  {
-    name: "Delivery",
-    routes: ["/dashboard", "/dashboard/orders"],
-  },
+  { id: 3, name: "Delivery", routes: ["/dashboard", "/dashboard/orders"] },
 ];

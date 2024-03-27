@@ -12,6 +12,13 @@ type Props = {
   };
 };
 const Products = ({ searchParams }: Props) => {
+  const currentPage = Number(searchParams?.page) || 1;
+  const genders = searchParams?.genders;
+  const tags = searchParams?.tags;
+  const sort = searchParams?.sort;
+  const url = `/api/v1/products?page=${currentPage}${
+    genders ? "&genders=" + genders : ""
+  }${tags ? "&tags=" + tags : ""}${sort ? "&sort=" + sort : ""}`;
   return (
     <>
       <h1 className="text-xl sm:text-3xl font-bold my-4">
@@ -21,7 +28,7 @@ const Products = ({ searchParams }: Props) => {
         key={`${searchParams?.page}_${searchParams?.genders}_${searchParams?.tags}_${searchParams?.sort}`}
         fallback={<CardsSkeleton />}
       >
-        <Cards searchParams={searchParams} />
+        <Cards url={url} />
       </Suspense>
     </>
   );

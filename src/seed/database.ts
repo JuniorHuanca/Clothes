@@ -13,12 +13,12 @@ async function main() {
     prisma.order.deleteMany(),
     prisma.user.deleteMany(),
     prisma.product.deleteMany(),
+    prisma.role.deleteMany(),
   ]);
-
+  await prisma.role.createMany({
+    data: baseRoles,
+  });
   await Promise.all([
-    prisma.role.createMany({
-      data: baseRoles,
-    }),
     prisma.user.createMany({
       data: baseUsers,
     }),
