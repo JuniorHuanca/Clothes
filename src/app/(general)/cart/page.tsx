@@ -16,13 +16,18 @@ const Cart = async (props: Props) => {
   return (
     <>
       {!session && (
-        <div className="max-w-screen-xl mx-auto w-full flex justify-center items-center h-screen bg-gradient-to-br from-rose-500 to-rose-600 text-white">
-          <div className="text-center">
-            <User size={48} className="text-white mx-auto mb-4" />
-            <h2 className="text-4xl font-semibold mb-4">
+        <div className="flex items-center justify-center h-screen">
+          <div className="bg-rose-600 p-8 rounded-lg text-center text-white shadow-xl animate-jump-in">
+            <User
+              size={48}
+              className="text-white mx-auto mb-4 animate-jump-in animate-delay-1000"
+            />
+            <h2 className="text-3xl font-semibold animate-flip-up animate-delay-1000">
               Por favor, inicia sesión
             </h2>
-            <p className="text-lg mb-8">Para acceder a tu carrito de compras</p>
+            <p className="text-lg animate-flip-up animate-delay-1000">
+              Para acceder a tu carrito de compras
+            </p>
           </div>
         </div>
       )}

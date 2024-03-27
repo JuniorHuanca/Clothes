@@ -7,7 +7,7 @@ const NotFoundProduct = (props: Props) => {
   return (
     <>
       <BackButton />
-      <NotFoundProducts text="El producto que estás buscando no se ha encontrado." />
+      <NotFoundProducts text="A la fecha, aún no se han registrado pedidos en el sistema." />
     </>
   );
 };

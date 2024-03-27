@@ -34,7 +34,7 @@ const Footer = (props: Props) => {
         <ul className="mt-12 flex justify-center gap-6 md:gap-8">
           <li>
             <Link
-              href="/"
+              href="https://github.com/JuniorHuanca"
               rel="noreferrer"
               target="_blank"
               className="text-rose-700 transition hover:text-rose-700/75"
@@ -46,7 +46,7 @@ const Footer = (props: Props) => {
 
           <li>
             <Link
-              href="/"
+              href="https://github.com/JuniorHuanca"
               rel="noreferrer"
               target="_blank"
               className="text-rose-700 transition hover:text-rose-700/75"
@@ -58,7 +58,7 @@ const Footer = (props: Props) => {
 
           <li>
             <Link
-              href="/"
+              href="https://github.com/JuniorHuanca"
               rel="noreferrer"
               target="_blank"
               className="text-rose-700 transition hover:text-rose-700/75"
@@ -70,7 +70,7 @@ const Footer = (props: Props) => {
 
           <li>
             <Link
-              href="/"
+              href="https://github.com/JuniorHuanca"
               rel="noreferrer"
               target="_blank"
               className="text-rose-700 transition hover:text-rose-700/75"

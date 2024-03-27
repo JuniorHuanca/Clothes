@@ -174,7 +174,7 @@ const Orders = ({ data }: Props) => {
           />
         ))}
         {data.length === 0 && (
-          <p className="text-center">Usuarios no encontrados</p>
+          <p className="text-center">Pedidos no encontrados</p>
         )}
       </div>
       {removeAssignConfirmation && (
