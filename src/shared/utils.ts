@@ -26,7 +26,7 @@ export const calcularSubtotalItem = (producto: IProductCart): number => {
 
 export const formatDate = (
   date: string,
-  locale: Intl.LocalesArgument = "es",
+  locale: string | string[] = "es",
   options: Intl.DateTimeFormatOptions = {
     dateStyle: "medium",
     timeStyle: "short",

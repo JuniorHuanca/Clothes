@@ -3,7 +3,7 @@ import prisma from "@/lib/prismadb";
 export async function PATCH(request: Request) {
   try {
     const body = await request.json();
-    const { ordersIds }: { ordersIds: number[] } = body;
+    const { ordersIds }: { ordersIds: string[] } = body;
     if (!ordersIds.length)
       return Response.json(
         {

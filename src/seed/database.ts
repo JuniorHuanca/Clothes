@@ -1,5 +1,5 @@
 import prisma from "../lib/prismadb";
-import { baseRoles, baseProducts, baseOrders, baseUsers } from "../data/index";
+import { baseRoles, baseProducts, baseUsers } from "../data/index";
 
 async function main() {
   await Promise.all([
@@ -13,12 +13,12 @@ async function main() {
     prisma.order.deleteMany(),
     prisma.user.deleteMany(),
     prisma.product.deleteMany(),
+    prisma.role.deleteMany(),
   ]);
-
+  await prisma.role.createMany({
+    data: baseRoles,
+  });
   await Promise.all([
-    prisma.role.createMany({
-      data: baseRoles,
-    }),
     prisma.user.createMany({
       data: baseUsers,
     }),
@@ -29,6 +29,5 @@ async function main() {
 }
 
 (() => {
-  if (process.env.NODE_ENV === "production") return;
   main();
 })();
