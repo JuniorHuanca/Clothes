@@ -1,5 +1,5 @@
 import prisma from "../lib/prismadb";
-import { baseRoles, baseProducts, baseOrders, baseUsers } from "../data/index";
+import { baseRoles, baseProducts, baseUsers } from "../data/index";
 
 async function main() {
   await Promise.all([
@@ -29,6 +29,5 @@ async function main() {
 }
 
 (() => {
-  if (process.env.NODE_ENV === "production") return;
   main();
 })();
