@@ -15,7 +15,8 @@ export default withAuth(
       return NextResponse.redirect(new URL("/", request.url));
     }
     if (
-      !request.nextauth.token.role.routes.includes(request.nextUrl.pathname)
+      !request.nextauth.token.role.routes.includes(request.nextUrl.pathname) &&
+      request.nextauth.token.role.name !== "Usuario"
     ) {
       return NextResponse.redirect(
         new URL(request.nextauth.token.role.routes[0], request.url)
@@ -30,5 +31,5 @@ export default withAuth(
 );
 
 export const config = {
-  matcher: ["/dashboard/:patch*"],
+  matcher: ["/dashboard/:patch*", "/profile/:patch*"],
 };

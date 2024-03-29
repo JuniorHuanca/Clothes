@@ -2,7 +2,9 @@ import { useFetch } from "@/hooks/useFetch";
 import { authOptions } from "@/shared/authOptions";
 import { IOrder, IProductOrder } from "@/shared/types";
 import { formatDate, formatPrice } from "@/shared/utils";
+import { Ticket } from "lucide-react";
 import { getServerSession } from "next-auth";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 
 type Props = {};
@@ -42,9 +44,21 @@ const Orders = async (props: Props) => {
   if (typeof orders !== "object") {
     notFound();
   }
-
   return (
     <div>
+      {!orders.length && (
+        <div className="text-center py-8">
+          <Ticket size={50} className="mx-auto mb-4" />
+          <h2 className="text-2xl font-semibold mb-4">Aún no tienes pedidos</h2>
+          <p className="text-lg mb-4">
+            ¡Haz alguna compra para ver tus pedidos aquí!
+          </p>
+
+          <Link href="/products" className="mb-4 text-rose-600 underline">
+            Explorar productos
+          </Link>
+        </div>
+      )}
       {orders.map((e) => (
         <div className="flex flex-wrap" key={e.id}>
           <div className="w-full sm:w-1/3 lg:w-1/5 p-3">
