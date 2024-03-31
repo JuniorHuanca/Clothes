@@ -2,10 +2,31 @@ import { useFetch } from "@/hooks/useFetch";
 import { authOptions } from "@/shared/authOptions";
 import { IOrder, IProductOrder } from "@/shared/types";
 import { formatDate, formatPrice } from "@/shared/utils";
+import { Ticket } from "lucide-react";
 import { getServerSession } from "next-auth";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 
 type Props = {};
+
+function getStatusColor(status: string) {
+  switch (status) {
+    case "Pendiente":
+      return "bg-yellow-500";
+    case "Procesando":
+      return "bg-blue-500";
+    case "En Camino":
+      return "bg-green-500";
+    case "Entregada":
+      return "bg-green-700";
+    case "Intento Fallido":
+      return "bg-red-500";
+    case "Cancelada":
+      return "bg-gray-500";
+    default:
+      return "bg-gray-500";
+  }
+}
 
 const Product = (props: IProductOrder) => {
   return (
@@ -42,21 +63,34 @@ const Orders = async (props: Props) => {
   if (typeof orders !== "object") {
     notFound();
   }
-
   return (
-    <div>
+    <div className="mx-auto max-w-screen-xl w-full">
+      {!orders.length && (
+        <div className="text-center py-8">
+          <Ticket size={50} className="mx-auto mb-4" />
+          <h2 className="text-2xl font-semibold mb-4">Aún no tienes pedidos</h2>
+          <p className="text-lg mb-4">
+            ¡Haz alguna compra para ver tus pedidos aquí!
+          </p>
+
+          <Link href="/products" className="mb-4 text-rose-600 underline">
+            Explorar productos
+          </Link>
+        </div>
+      )}
       {orders.map((e) => (
-        <div className="flex flex-wrap" key={e.id}>
+        <div className="flex flex-wrap bg-slate-100" key={e.id}>
           <div className="w-full sm:w-1/3 lg:w-1/5 p-3">
             <span className="font-bold">Fecha</span>
             <p>{formatDate(e.createdAt)}</p>
             <span className="font-bold">Estado</span>
-            <p>{e.status}</p>
-          </div>
-          <div className="w-full sm:w-1/3 lg:w-1/5 p-3">
-            <span className="font-bold">Usuario</span>
-            <p className="line-clamp-1">{e.user.name}</p>
-            <p>{e.user.email}</p>
+            <p
+              className={`text-white w-max px-2 rounded-2xl ${getStatusColor(
+                e.status
+              )}`}
+            >
+              {e.status}
+            </p>
           </div>
           <div className="w-full sm:w-1/3 lg:w-1/5 p-3">
             <span className="font-bold">Repartidor</span>
@@ -65,6 +99,10 @@ const Orders = async (props: Props) => {
             ) : (
               <p>No asignado</p>
             )}
+          </div>
+          <div className="w-full sm:w-1/3 lg:w-1/5 p-3">
+            <span className="font-bold">Precio Total</span>
+            <p>{formatPrice(e.totalPrice)}</p>
           </div>
           <div className="w-full lg:w-2/5 p-3 flex-1">
             <span className="font-bold">Productos</span>

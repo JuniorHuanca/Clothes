@@ -2,19 +2,18 @@ import prisma from "../lib/prismadb";
 import { baseRoles, baseProducts, baseUsers } from "../data/index";
 
 async function main() {
-  await Promise.all([
-    prisma.session.deleteMany(),
-    prisma.account.deleteMany(),
-    prisma.cart.deleteMany(),
+  await prisma.session.deleteMany();
+  await prisma.account.deleteMany();
 
-    prisma.orderItem.deleteMany(),
-    prisma.cartItem.deleteMany(),
+  await prisma.orderItem.deleteMany();
+  await prisma.cartItem.deleteMany();
 
-    prisma.order.deleteMany(),
-    prisma.user.deleteMany(),
-    prisma.product.deleteMany(),
-    prisma.role.deleteMany(),
-  ]);
+  await prisma.order.deleteMany();
+  await prisma.cart.deleteMany();
+
+  await prisma.user.deleteMany();
+  await prisma.product.deleteMany();
+  await prisma.role.deleteMany();
   await prisma.role.createMany({
     data: baseRoles,
   });
@@ -29,5 +28,6 @@ async function main() {
 }
 
 (() => {
+  if (process.env.NODE_ENV === "production") return;
   main();
 })();
