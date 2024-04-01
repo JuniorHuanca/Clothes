@@ -6,10 +6,16 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 import Input from "@/components/Custom/Input";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import Tooltip from "@/components/Tooltip";
+import { Eye, EyeOff } from "lucide-react";
 type Props = {};
 
 const Register = (props: Props) => {
   const router = useRouter();
+  const [passwordVisibility, setPasswordVisibility] = useState(false);
+  const [confirmPasswordVisibility, setConfirmPasswordVisibility] =
+    useState(false);
   const initialValues = {
     name: "",
     email: "",
@@ -80,21 +86,44 @@ const Register = (props: Props) => {
             formik={formik}
             fieldName="password"
             fieldNameTranslate="Contraseña"
+            type={passwordVisibility ? "text" : "password"}
+            icon={
+              passwordVisibility ? (
+                <Tooltip text="Ocultar" icon={<EyeOff />} alignment="top" />
+              ) : (
+                <Tooltip text="Mostrar" icon={<Eye />} alignment="top" />
+              )
+            }
+            customFuntion={() => setPasswordVisibility(!passwordVisibility)}
           />
           <Input
             formik={formik}
             fieldName="confirmPassword"
             fieldNameTranslate="Confirmar contraseña"
+            type={confirmPasswordVisibility ? "text" : "password"}
+            icon={
+              confirmPasswordVisibility ? (
+                <Tooltip text="Ocultar" icon={<EyeOff />} alignment="top" />
+              ) : (
+                <Tooltip text="Mostrar" icon={<Eye />} alignment="top" />
+              )
+            }
+            customFuntion={() =>
+              setConfirmPasswordVisibility(!confirmPasswordVisibility)
+            }
           />
           <button
             type="submit"
-            className="w-full bg-green-500 text-white p-2 rounded-md hover:bg-green-600 transition"
+            className="mt-4 w-full bg-green-500 text-white p-2 rounded-md hover:bg-green-600 transition"
           >
             Registrarse
           </button>
         </form>
-        <p className="mt-4 text-sm text-gray-600">
-          ¿Ya tienes una cuenta? <Link href="/auth/login">Inicia Sesión</Link>
+        <p className="mt-4 text-sm font-bold text-center">
+          ¿Ya tienes una cuenta?{" "}
+          <Link className="underline" href="/auth/login">
+            Inicia Sesión
+          </Link>
         </p>
       </div>
     </main>
