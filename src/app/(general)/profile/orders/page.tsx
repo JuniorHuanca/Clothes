@@ -79,7 +79,7 @@ const Orders = async (props: Props) => {
         </div>
       )}
       {orders.map((e) => (
-        <div className="flex flex-wrap bg-slate-100" key={e.id}>
+        <div className="flex flex-wrap bg-slate-100 rounded-md my-1" key={e.id}>
           <div className="w-full sm:w-1/3 lg:w-1/5 p-3">
             <span className="font-bold">Fecha</span>
             <p>{formatDate(e.createdAt)}</p>
